@@ -8060,8 +8060,11 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                 name: "TQuin",
                 avatarUrl: "assets/image/personalized/tquin-avatar.png",
                 images: [
-                    "assets/image/personalized/tquin.png",
-                    "assets/image/personalized/tquin-avatar.png"
+                    "assets/image/personalized/tquin-photo-1.png",
+                    "assets/image/personalized/tquin-photo-2.png",
+                    "assets/image/personalized/tquin-photo-3.jpg",
+                    "assets/image/personalized/tquin-photo-4.png",
+                    "assets/image/personalized/tquin-photo-5.png"
                 ],
                 fallbackEmoji: "🌹",
                 giftType: "red-rose",
@@ -13463,10 +13466,18 @@ if(window.TINY_PERF && !window.TINY_PERF.mobile){
         var recipientConf = (window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[recipientKey]);
         var personalizedPhotos = (recipientConf && recipientConf.images && recipientConf.images.length > 0)
           ? recipientConf.images
-          : [
-            "assets/image/personalized/" + recipientKey + ".png",
-            "assets/image/personalized/" + recipientKey + "-avatar.png"
-          ];
+          : (recipientKey === 'tquin'
+            ? [
+                "assets/image/personalized/tquin-photo-1.png",
+                "assets/image/personalized/tquin-photo-2.png",
+                "assets/image/personalized/tquin-photo-3.jpg",
+                "assets/image/personalized/tquin-photo-4.png",
+                "assets/image/personalized/tquin-photo-5.png"
+              ]
+            : [
+                "assets/image/personalized/" + recipientKey + ".png",
+                "assets/image/personalized/" + recipientKey + "-avatar.png"
+              ]);
 
         var photoUrls = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
           ? window.LOVEGIFT_IMAGES

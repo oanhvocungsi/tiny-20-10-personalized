@@ -13,6 +13,15 @@
     if (window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[key] && window.TINY_RECIPIENT_CONFIG[key].images) {
       return window.TINY_RECIPIENT_CONFIG[key].images;
     }
+    if (key === 'tquin') {
+      return [
+        "assets/image/personalized/tquin-photo-1.png",
+        "assets/image/personalized/tquin-photo-2.png",
+        "assets/image/personalized/tquin-photo-3.jpg",
+        "assets/image/personalized/tquin-photo-4.png",
+        "assets/image/personalized/tquin-photo-5.png"
+      ];
+    }
     return [
       "assets/image/personalized/" + key + ".png",
       "assets/image/personalized/" + key + "-avatar.png"
