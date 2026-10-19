@@ -22,6 +22,14 @@
         "assets/image/personalized/tquin-photo-5.png"
       ];
     }
+    if (key === 'huong') {
+      return [
+        "assets/image/personalized/huong-photo-1.png",
+        "assets/image/personalized/huong-photo-2.jpg",
+        "assets/image/personalized/huong-photo-3.png",
+        "assets/image/personalized/huong-photo-4.png"
+      ];
+    }
     return [
       "assets/image/personalized/" + key + ".png",
       "assets/image/personalized/" + key + "-avatar.png"
