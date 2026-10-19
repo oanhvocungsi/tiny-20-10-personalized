@@ -402,7 +402,7 @@ window.TINY_PERF = (() => {
             gap: 18px;
             justify-content: center;
             align-items: center;
-            z-index: 30;
+            z-index: 60;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -499,6 +499,71 @@ window.TINY_PERF = (() => {
             0%, 100% { transform: scale(1); opacity: 0.95; }
             50% { transform: scale(1.04); opacity: 1; }
         }
+
+        .recipient-music-status {
+            margin-top: 6px;
+            padding: 8px 20px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 215, 0, 0.45);
+            border-radius: 999px;
+            color: #ffd166;
+            font-size: clamp(12px, 1.8vw, 15px);
+            font-family: 'Courier Prime', monospace;
+            text-align: center;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 0 12px rgba(255, 209, 102, 0.3);
+            animation: fadeInStatus 0.4s ease;
+            user-select: none;
+        }
+        .recipient-music-status b {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .music-wave-icon {
+            display: inline-block;
+            margin-right: 6px;
+            animation: waveBounce 0.8s infinite alternate ease-in-out;
+        }
+        @keyframes waveBounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-3px); }
+        }
+        @keyframes fadeInStatus {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .recipient-switch-pill {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 99999;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            border-radius: 999px;
+            padding: 8px 18px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Courier Prime', monospace;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+            transition: all 0.25s ease;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .recipient-switch-pill:hover {
+            background: rgba(30, 41, 59, 0.95);
+            transform: scale(1.06);
+            border-color: #ff85b3;
+            box-shadow: 0 0 16px rgba(255, 133, 179, 0.6);
+        }
+
 
         .recipient-circle[data-recipient="tquin"] {
             border-color: rgba(255, 77, 109, 0.8);
@@ -3651,11 +3716,11 @@ window.TINY_PERF = (() => {
             border: 2.5px solid rgba(255, 182, 218, 0.75);
             box-shadow: 0 0 30px rgba(255, 105, 180, 0.55), inset 0 0 18px rgba(255, 192, 203, 0.25);
             text-shadow: 0 0 14px rgba(255, 105, 180, 0.95), 0 0 28px rgba(255, 20, 147, 0.75);
-            pointer-events: auto; cursor: pointer; opacity: 0;
+            pointer-events: none; cursor: pointer; opacity: 0;
             transition: opacity .25s ease, transform .25s ease, background .3s ease, border-color .3s ease, box-shadow .3s ease;
             user-select: none; -webkit-user-select: none;
         }
-        #music-wait-hint.show { opacity: 1; transform: translate(-50%, 0); }
+        #music-wait-hint.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
         #music-wait-hint.ready-to-click {
             background: linear-gradient(135deg, rgba(255, 75, 145, 0.94), rgba(255, 130, 185, 0.94));
             border-color: #ffffff;
@@ -4212,7 +4277,7 @@ body.luck-scene #khung-mat { z-index: 6; }
 
 /* ==========================================================================
    MASTER ANIMATION: DREAMY PINK FLORAL WONDERLAND (Blooming Flower Bouquet)
-   Hiển thị trước khi xuất hiện câu chữ: "Gửi đến em — cô gái..."
+   Hiển thị trước khi xuất hiện cảnh hoa và câu chúc
    Lấy cảm hứng từ ảnh tham chiếu, chuẩn digital art 60fps
    ========================================================================== */
 #blooming-bouquet-screen {
@@ -7462,10 +7527,16 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
           <span class="recipient-name">Hương</span>
         </button>
       </div>
+      <div id="recipient-music-status" class="recipient-music-status" style="display:none;" aria-live="polite"></div>
       <div id="recipient-confirm-pill" class="recipient-confirm-pill" style="display:none;" role="button" tabindex="0">
         <span class="pill-text">Tiếp tục cùng <b id="pill-recipient-name">TQuin</b> ➜</span>
       </div>
     </div>
+
+    <!-- Nút đổi người nhận mọi lúc (Floating Switcher) -->
+    <button type="button" id="recipient-switch-pill" class="recipient-switch-pill" style="display:none;" aria-label="Đổi người nhận">
+      <span>🔄</span><span>Đổi bạn nhận</span>
+    </button>
     <div id="text-4" class="text-layer">ui bạn đẹp quá</div>
     <div id="text-5" class="text-layer"><span class="chu-20-10">à thì cũng sắp </span><span class="chu-20-10">20/10 rồi</span></div>
     <div id="text-6" class="text-layer">nên là tôi muốn</div>
@@ -7855,7 +7926,7 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
       </div>
       <h2 class="reality-message" style="max-width:850px; line-height:1.7; font-size:clamp(1.05rem, 3vw, 1.7rem); text-align:center; padding: 0 16px;">
         Dù bận rộn đến đâu, cũng nhớ phải thương lấy bản thân mình nhé 💕<br>
-        <span class="reality-pink" style="display:block; margin-top:10px; font-size:0.92em;">Mỗi ngày trôi qua, mong em luôn được bình yên và yêu thương thật nhiều ✨</span>
+        <span class="reality-pink" style="display:block; margin-top:10px; font-size:0.92em;">Mỗi ngày trôi qua, mong bạn luôn được bình yên và yêu thương thật nhiều ✨</span>
       </h2>
       <div class="reality-moon-walk" aria-hidden="true">
   <svg class="moon-landscape" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice">
@@ -7958,28 +8029,105 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
     </section>
 
     <script>
-        // Cấu hình danh tính 3 người nhận (Phase 1)
+        // Cấu hình dữ liệu cá nhân hóa 3 người nhận (TQuin, Nhi, Hương)
         window.TINY_RECIPIENT_CONFIG = {
             tquin: {
-                name: "Tquin",
+                id: "tquin",
+                name: "TQuin",
                 avatarUrl: "",
                 fallbackEmoji: "🌹",
                 giftType: "red-rose",
-                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-red">đóa hoa hồng</span> này'
+                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-red">đóa hoa hồng</span> này',
+                songTitle: "Hẹn Hò Nhưng Không Yêu Remix",
+                musicSrc: "assets/music/personalized/hen-ho-nhung-khong-yeu-remix.mp3",
+                wishes: [
+                    "Chúc bạn 20/10 thật xinh, thật vui và luôn có thật nhiều điều đáng yêu xuất hiện mỗi ngày.",
+                    "Mong tuổi trẻ của bạn luôn rực rỡ như màu hồng, đầy những bất ngờ dễ thương và những kỷ niệm khó quên.",
+                    "Chúc bạn luôn tự tin tỏa sáng theo cách riêng, vui vẻ hết mình và gặp thật nhiều người tốt trên hành trình của mình.",
+                    "Mong mỗi ngày của bạn đều có một chút ngọt ngào, một chút may mắn và thật nhiều lý do để mỉm cười.",
+                    "Chúc cô gái mang năng lượng dễ thương này luôn gặp chuyện vui, làm điều mình thích và có những ngày thật đáng nhớ.",
+                    "20/10 vui vẻ nhé! Mong những điều bạn mong chờ sẽ dần thành hiện thực, còn những điều tốt đẹp thì cứ liên tục tìm đến bạn."
+                ],
+                lyricCues: [
+                    {"time":0.0,"text":"Hẹn Hò Nhưng Không Yêu Remix - Wendy Thảo x V2T"},
+                    {"time":4.0,"text":"♪ Giai điệu rộn ràng dành riêng cho TQuin 20/10 ♪"},
+                    {"time":9.0,"text":"Chúc TQuin luôn tươi vui và rạng rỡ mỗi ngày ✨"},
+                    {"time":14.0,"text":"Năng lượng tích cực lan tỏa đến mọi người xung quanh"},
+                    {"time":19.0,"text":"Luôn tự tin tỏa sáng theo phong cách riêng của bạn"},
+                    {"time":24.0,"text":"Mỗi bước đi đều có niềm vui và những bất ngờ đáng yêu"},
+                    {"time":29.0,"text":"Thế giới này luôn dịu dàng với cô gái nhiều năng lượng"},
+                    {"time":34.0,"text":"20/10 thật tuyệt vời và ngập tràn hạnh phúc nha!"},
+                    {"time":40.0,"text":"♪ Nhạc cực bốc, tinh thần cực tươi ♪"},
+                    {"time":46.0,"text":"Mọi dự định và mong ước đều sớm nở hoa thành quả"},
+                    {"time":52.0,"text":"Luôn có những người bạn tốt đồng hành bên cạnh"},
+                    {"time":58.0,"text":"Bình yên, ngọt ngào và may mắn luôn ghé thăm"},
+                    {"time":65.0,"text":"Chúc bạn tuổi trẻ rực rỡ và luôn mỉm cười thật tươi ✨"},
+                    {"time":75.0,"text":"Happy Vietnamese Women's Day - TQuin! 🌹"}
+                ]
             },
             nhi: {
+                id: "nhi",
                 name: "Nhi",
                 avatarUrl: "",
                 fallbackEmoji: "💠",
                 giftType: "blue-rose",
-                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-blue">đóa hoa hồng</span> này'
+                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-blue">đóa hoa hồng</span> này',
+                songTitle: "Starboy – The Weeknd ft. Daft Punk",
+                musicSrc: "assets/music/personalized/starboy-the-weeknd.mp3",
+                wishes: [
+                    "Chúc bạn có một ngày 20/10 thật nổi bật, luôn tự tin và giữ được chất riêng không thể nhầm lẫn.",
+                    "Mong cuộc sống của bạn luôn có những giai điệu hay, những chuyến đi thú vị và thật nhiều trải nghiệm đáng nhớ.",
+                    "Chúc bạn luôn đủ bản lĩnh để theo đuổi điều mình thích và đủ tự tin để trở thành phiên bản mà chính mình mong muốn.",
+                    "Mong playlist cuộc đời bạn luôn có nhiều bài hit, nhiều khoảnh khắc đỉnh cao và thật ít những ngày mất mood.",
+                    "Chúc bạn luôn gặp đúng người bạn tốt, đúng cơ hội và những điều khiến cuộc sống trở nên thú vị hơn.",
+                    "Happy 20/10! Cứ sống theo phong cách của bạn, khám phá những điều mới và tạo ra những câu chuyện thật đáng nhớ nhé."
+                ],
+                lyricCues: [
+                    {"time":0.0,"text":"Starboy - The Weeknd ft. Daft Punk"},
+                    {"time":4.0,"text":"♪ Beat cực chất dành riêng cho Nhi 20/10 ♪"},
+                    {"time":9.0,"text":"Look what you've done, I'm a motherf**kin' starboy ✨"},
+                    {"time":15.0,"text":"Chúc Nhi luôn tự tin, cá tính và giữ trọn chất riêng"},
+                    {"time":21.0,"text":"Bản lĩnh theo đuổi ước mơ và tỏa sáng rực rỡ"},
+                    {"time":28.0,"text":"Playlist cuộc sống luôn đầy ắp những giai điệu thăng hoa"},
+                    {"time":35.0,"text":"Gặp đúng cơ hội, đúng người bạn tốt trên mọi chặng đường"},
+                    {"time":42.0,"text":"Không bao giờ tụt mood, luôn ngập tràn năng lượng đỉnh cao"},
+                    {"time":50.0,"text":"Từng ngày trôi qua đều là những trải nghiệm thú vị"},
+                    {"time":58.0,"text":"Tỏa sáng như một ngôi sao thực thụ ⭐"},
+                    {"time":66.0,"text":"Chúc Nhi 20/10 cực kỳ đặc biệt và đáng nhớ!"},
+                    {"time":75.0,"text":"Shine bright, stay awesome, Nhi! 💠"}
+                ]
             },
             huong: {
+                id: "huong",
                 name: "Hương",
                 avatarUrl: "",
                 fallbackEmoji: "🍭",
                 giftType: "lollipop",
-                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-candy">cây kẹo ngọt ngào</span> này'
+                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-candy">cây kẹo ngọt ngào</span> này',
+                songTitle: "Nhạc chill bạn bè 20/10",
+                musicSrc: "assets/music/personalized/huong-chill-friends.mp3",
+                wishes: [
+                    "Chúc bạn 20/10 thật bình yên, luôn có những ngày nhẹ nhàng và những niềm vui nhỏ khiến mình mỉm cười.",
+                    "Mong bạn luôn gặp được những người chân thành, có những cuộc trò chuyện dễ chịu và lưu giữ nhiều kỷ niệm đẹp.",
+                    "Chúc những ngày mệt mỏi của bạn sớm qua đi, nhường chỗ cho những ngày thư thả, vui vẻ và đầy năng lượng tích cực.",
+                    "Mong bạn luôn có thời gian dành cho bản thân, nghe một bản nhạc yêu thích và tận hưởng những điều giản dị quanh mình.",
+                    "Chúc tình bạn của chúng ta luôn thoải mái, chân thành và có thêm thật nhiều câu chuyện vui để nhớ về sau này.",
+                    "20/10 vui vẻ nhé! Chúc bạn luôn bình an, gặp nhiều điều tử tế và tìm thấy niềm vui ngay cả trong những ngày bình thường nhất."
+                ],
+                lyricCues: [
+                    {"time":0.0,"text":"Giai Điệu Chill Yêu Đời - Dành Tặng Hương"},
+                    {"time":4.0,"text":"♪ Một chút bình yên và dịu dàng ngày 20/10 ♪"},
+                    {"time":9.0,"text":"Mong mỗi ngày của bạn đều trôi qua thật nhẹ nhàng"},
+                    {"time":14.0,"text":"Có một tách trà ấm, một bản nhạc hay bên khung cửa sổ"},
+                    {"time":20.0,"text":"Mọi mệt mỏi sớm tan biến, chỉ còn lại sự an nhiên"},
+                    {"time":27.0,"text":"Những cuộc trò chuyện chân thành và ấm áp tình bạn"},
+                    {"time":34.0,"text":"Dành thời gian yêu thương và chăm sóc bản thân nhiều hơn nhé"},
+                    {"time":42.0,"text":"Tìm thấy niềm vui giản dị ngay trong từng khoảnh khắc"},
+                    {"time":50.0,"text":"Nụ cười an yên luôn nở trên môi người bạn dễ mến"},
+                    {"time":58.0,"text":"Bình an trong tâm hồn, vững vàng trước mọi sóng gió"},
+                    {"time":66.0,"text":"Chúc Hương một ngày 20/10 ngập tràn bình yên và ấm áp 🍭"},
+                    {"time":75.0,"text":"Mãi là người bạn tuyệt vời và đáng quý! ✨"}
+                ]
             }
         };
         window.TINY_RECIPIENT = 'tquin'; // Default fallback until selected
@@ -8043,31 +8191,31 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
 
         const lyricCues = [
             {"time":0.0,"text":"Giải Cứu Thế Giới - TINH HÀ SAY HI"},
-            {"time":4.0,"text":"♪ Giai điệu ngọt ngào dành tặng em ♪"},
-            {"time":9.0,"text":"Có phải anh đã cứu thế giới ở một cuộc đời trước đây?"},
-            {"time":14.0,"text":"Nên là em mới bước tới dịu dàng và nắm tay"},
+            {"time":4.0,"text":"♪ Giai điệu ngọt ngào dành tặng bạn ♪"},
+            {"time":9.0,"text":"Có phải tôi đã cứu thế giới ở một cuộc đời trước đây?"},
+            {"time":14.0,"text":"Nên là bạn mới bước tới dịu dàng và nắm tay"},
             {"time":18.5,"text":"Đi qua bão giông đang cuộn xoay, những tâm tư bủa vây"},
-            {"time":22.8,"text":"Người đã vì anh mà ôm lấy!"},
-            {"time":28.0,"text":"Và giờ thì cả thế giới của anh đang ở đây"},
-            {"time":32.5,"text":"Là người con gái đứng trước mắt anh lúc này"},
-            {"time":37.0,"text":"Tưởng như chính anh đang nằm mơ"},
+            {"time":22.8,"text":"Người đã vì tôi mà ôm lấy!"},
+            {"time":28.0,"text":"Và giờ thì cả thế giới của tôi đang ở đây"},
+            {"time":32.5,"text":"Là người bạn đứng trước mắt tôi lúc này"},
+            {"time":37.0,"text":"Tưởng như chính tôi đang nằm mơ"},
             {"time":41.0,"text":"Có đâu ngờ mình may mắn đến nhường này!"},
-            {"time":46.0,"text":"Đôi khi anh ngẩn ngơ, lòng còn đầy băn khoăn"},
-            {"time":50.5,"text":"Sao em luôn chọn anh mà chẳng hề phân vân?"},
+            {"time":46.0,"text":"Đôi khi tôi ngẩn ngơ, lòng còn đầy băn khoăn"},
+            {"time":50.5,"text":"Sao bạn luôn bên tôi mà chẳng hề phân vân?"},
             {"time":55.0,"text":"Dù mọi chuyện đang tốt hay là chẳng ok"},
-            {"time":59.5,"text":"Em vẫn ở đó thôi, chẳng gì đổi thay"},
-            {"time":64.0,"text":"Người làm anh nhớ nụ cười em trao từ lần đầu tiên"},
+            {"time":59.5,"text":"Bạn vẫn ở đó thôi, chẳng gì đổi thay"},
+            {"time":64.0,"text":"Người làm tôi nhớ nụ cười bạn trao từ lần đầu tiên"},
             {"time":73.0,"text":"Người là những yên bình, chỉ mong mãi gần bên"},
-            {"time":77.5,"text":"Là điều quý giá nhất anh chẳng thể nào quên"},
-            {"time":82.0,"text":"Có phải anh đã cứu thế giới ở một cuộc đời trước đây?"},
-            {"time":87.0,"text":"Nên là em mới bước tới dịu dàng và nắm tay anh"},
+            {"time":77.5,"text":"Là điều quý giá nhất tôi chẳng thể nào quên"},
+            {"time":82.0,"text":"Có phải tôi đã cứu thế giới ở một cuộc đời trước đây?"},
+            {"time":87.0,"text":"Nên là bạn mới bước tới dịu dàng và nắm tay tôi"},
             {"time":91.5,"text":"Đi qua bão giông đang cuộn xoay, những tâm tư bủa vây"},
-            {"time":96.0,"text":"Người đã vì anh mà ôm lấy!"},
-            {"time":101.0,"text":"Và giờ thì cả thế giới của anh đang ở đây"},
-            {"time":105.5,"text":"Là người con gái đứng trước mắt anh lúc này"},
-            {"time":110.0,"text":"Tựa như chính anh đang nằm mơ, có đâu ngờ"},
+            {"time":96.0,"text":"Người đã vì tôi mà ôm lấy!"},
+            {"time":101.0,"text":"Và giờ thì cả thế giới của tôi đang ở đây"},
+            {"time":105.5,"text":"Là người bạn đứng trước mắt tôi lúc này"},
+            {"time":110.0,"text":"Tựa như chính tôi đang nằm mơ, có đâu ngờ"},
             {"time":114.5,"text":"Mình may mắn đến nhường này!"},
-            {"time":124.0,"text":"Em đã đến giải cứu thế giới của anh..."}
+            {"time":124.0,"text":"Bạn đã đến làm rực rỡ thế giới của tôi..."}
         ];
         const MUSIC_HOLD_TIME = 9.0;
         const MUSIC_VOLUME = 0.84;
@@ -8171,11 +8319,20 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             startMusicIfAllowed();
         }
 
+        function getCurrentLyricCues() {
+            const key = window.TINY_RECIPIENT;
+            if (key && window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[key] && window.TINY_RECIPIENT_CONFIG[key].lyricCues) {
+                return window.TINY_RECIPIENT_CONFIG[key].lyricCues;
+            }
+            return lyricCues;
+        }
+
         function cueIndexAt(t) {
-            let lo = 0, hi = lyricCues.length - 1, result = -1;
+            const cues = getCurrentLyricCues();
+            let lo = 0, hi = cues.length - 1, result = -1;
             while (lo <= hi) {
                 const mid = (lo + hi) >> 1;
-                if (lyricCues[mid].time <= t + .035) { result = mid; lo = mid + 1; }
+                if (cues[mid].time <= t + .035) { result = mid; lo = mid + 1; }
                 else hi = mid - 1;
             }
             return result;
@@ -8184,16 +8341,17 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
         // Luân phiên 2 hàng: hàng cũ mờ ra và hàng mới sáng lên, không dịch lyric theo số click.
         function syncLyricWithMusic(force=false) {
             if (activeWish !== 'smile') return;
+            const cues = getCurrentLyricCues();
             const index = cueIndexAt(tinySoundtrack.currentTime || 0);
             if (index === lyricActiveIndex && !force) return;
-            if (index < 0) {
+            if (index < 0 || index >= cues.length) {
                 lyricSlots.forEach(el => el.classList.remove('show'));
                 lyricActiveIndex = -1;
                 return;
             }
             const oldSlot = lyricSlotIndex;
             const nextSlot = oldSlot < 0 ? 0 : 1 - oldSlot;
-            const cue = lyricCues[index];
+            const cue = cues[index];
             // Nếu song bị tua/người xem vào cảnh muộn, cập nhật ngay câu ứng với thời gian thực.
             lyricSlots.forEach(el => el.classList.remove('show'));
             const el = lyricSlots[nextSlot];
@@ -8220,7 +8378,7 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
 
         tinySoundtrack.addEventListener('timeupdate', () => {
             const t = tinySoundtrack.currentTime || 0;
-            // Khi đang ở cảnh 2 (Text 3: "Hôm nay anh nhận lệnh...") và nhạc chạm mốc 9.0s:
+            // Khi đang ở cảnh 2 (Text 3) và nhạc chạm mốc 9.0s:
             // Hiển thị animation nút/thông báo "được ròi bấm đi ạ"
             if (clickCount === 2 && t >= MUSIC_HOLD_TIME) {
                 triggerReadyToClick();
@@ -8370,60 +8528,7 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             }
         }
 
-        // Cấu hình dữ liệu cá nhân hóa 3 người nhận (TQuin, Nhi, Hương)
-        window.TINY_RECIPIENT_CONFIG = {
-            tquin: {
-                id: "tquin",
-                name: "TQuin",
-                songTitle: "Hẹn Hò Nhưng Không Yêu Remix",
-                musicSrc: "assets/music/personalized/hen-ho-nhung-khong-yeu-remix.mp3",
-                fallbackEmoji: "🌹",
-                giftType: "red-rose",
-                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-red">đóa hoa hồng</span> này',
-                wishes: [
-                    "Chúc bạn 20/10 thật xinh, thật vui và luôn có thật nhiều điều đáng yêu xuất hiện mỗi ngày.",
-                    "Mong tuổi trẻ của bạn luôn rực rỡ như màu hồng, đầy những bất ngờ dễ thương và những kỷ niệm khó quên.",
-                    "Chúc bạn luôn tự tin tỏa sáng theo cách riêng, vui vẻ hết mình và gặp thật nhiều người tốt trên hành trình của mình.",
-                    "Mong mỗi ngày của bạn đều có một chút ngọt ngào, một chút may mắn và thật nhiều lý do để mỉm cười.",
-                    "Chúc cô gái mang năng lượng dễ thương này luôn gặp chuyện vui, làm điều mình thích và có những ngày thật đáng nhớ.",
-                    "20/10 vui vẻ nhé! Mong những điều bạn mong chờ sẽ dần thành hiện thực, còn những điều tốt đẹp thì cứ liên tục tìm đến bạn."
-                ]
-            },
-            nhi: {
-                id: "nhi",
-                name: "Nhi",
-                songTitle: "Starboy – The Weeknd",
-                musicSrc: "assets/music/personalized/starboy-the-weeknd.mp3",
-                fallbackEmoji: "💠",
-                giftType: "blue-rose",
-                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-blue">đóa hoa hồng</span> này',
-                wishes: [
-                    "Chúc bạn có một ngày 20/10 thật nổi bật, luôn tự tin và giữ được chất riêng không thể nhầm lẫn.",
-                    "Mong cuộc sống của bạn luôn có những giai điệu hay, những chuyến đi thú vị và thật nhiều trải nghiệm đáng nhớ.",
-                    "Chúc bạn luôn đủ bản lĩnh để theo đuổi điều mình thích và đủ tự tin để trở thành phiên bản mà chính mình mong muốn.",
-                    "Mong playlist cuộc đời bạn luôn có nhiều bài hit, nhiều khoảnh khắc đỉnh cao và thật ít những ngày mất mood.",
-                    "Chúc bạn luôn gặp đúng người bạn tốt, đúng cơ hội và những điều khiến cuộc sống trở nên thú vị hơn.",
-                    "Happy 20/10! Cứ sống theo phong cách của bạn, khám phá những điều mới và tạo ra những câu chuyện thật đáng nhớ nhé."
-                ]
-            },
-            huong: {
-                id: "huong",
-                name: "Hương",
-                songTitle: "Nhạc chill bạn bè 20/10",
-                musicSrc: "assets/music/personalized/huong-chill-friends.mp3",
-                fallbackEmoji: "🍭",
-                giftType: "lollipop",
-                giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-candy">cây kẹo ngọt ngào</span> này',
-                wishes: [
-                    "Chúc bạn 20/10 thật bình yên, luôn có những ngày nhẹ nhàng và những niềm vui nhỏ khiến mình mỉm cười.",
-                    "Mong bạn luôn gặp được những người chân thành, có những cuộc trò chuyện dễ chịu và lưu giữ nhiều kỷ niệm đẹp.",
-                    "Chúc những ngày mệt mỏi của bạn sớm qua đi, nhường chỗ cho những ngày thư thả, vui vẻ và đầy năng lượng tích cực.",
-                    "Mong bạn luôn có thời gian dành cho bản thân, nghe một bản nhạc yêu thích và tận hưởng những điều giản dị quanh mình.",
-                    "Chúc tình bạn của chúng ta luôn thoải mái, chân thành và có thêm thật nhiều câu chuyện vui để nhớ về sau này.",
-                    "20/10 vui vẻ nhé! Chúc bạn luôn bình an, gặp nhiều điều tử tế và tìm thấy niềm vui ngay cả trong những ngày bình thường nhất."
-                ]
-            }
-        };
+        // window.TINY_RECIPIENT_CONFIG đã được khởi tạo đầy đủ kèm lyricCues ở đầu script
 
         const DEFAULT_FALLBACK_AUDIO = 'assets/music/giai-cuu-the-gioi.mp3';
         let audioSwitchToken = 0;
@@ -8447,26 +8552,42 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                 tinySoundtrack.pause();
             } catch (_) {}
 
+            lyricActiveIndex = -1;
+            lyricSlotIndex = -1;
+            if (Array.isArray(lyricSlots)) {
+                lyricSlots.forEach(el => { if (el) { el.classList.remove('show','compact'); el.textContent = ''; } });
+            }
+
             const onAudioError = function() {
                 if (currentToken !== audioSwitchToken) return;
-                console.warn(`[Audio] Custom track "${targetSrc}" not found or failed, falling back to ${DEFAULT_FALLBACK_AUDIO}`);
+                // Bỏ qua nếu lỗi là do hủy bỏ / chuyển bài mới (code 1 = MEDIA_ERR_ABORTED)
+                if (tinySoundtrack.error && tinySoundtrack.error.code === 1) return;
+                console.warn(`[Audio] Custom track "${targetSrc}" failed or not found, falling back to ${DEFAULT_FALLBACK_AUDIO}`);
                 tinySoundtrack.removeEventListener('error', onAudioError);
                 tinySoundtrack.src = DEFAULT_FALLBACK_AUDIO;
-                tinySoundtrack.load();
-                tinySoundtrack.play().catch(() => {});
+                try {
+                    tinySoundtrack.currentTime = 0;
+                    tinySoundtrack.muted = false;
+                    tinySoundtrack.volume = (typeof MUSIC_VOLUME !== 'undefined') ? MUSIC_VOLUME : 1.0;
+                    tinySoundtrack.play().catch(() => {});
+                } catch (_) {}
             };
 
             tinySoundtrack.addEventListener('error', onAudioError, { once: true });
 
+            try {
+                tinySoundtrack.muted = false;
+                tinySoundtrack.volume = (typeof MUSIC_VOLUME !== 'undefined') ? MUSIC_VOLUME : 1.0;
+            } catch (_) {}
+
             tinySoundtrack.src = targetSrc;
             tinySoundtrack.currentTime = 0;
-            tinySoundtrack.load();
 
             const playPromise = tinySoundtrack.play();
             if (playPromise && typeof playPromise.catch === 'function') {
                 playPromise.catch(() => {
                     if (currentToken !== audioSwitchToken) return;
-                    if (tinySoundtrack.error) {
+                    if (tinySoundtrack.error && tinySoundtrack.error.code !== 1) {
                         onAudioError();
                     }
                 });
@@ -8481,13 +8602,35 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             currentSelectedRecipient = null;
             if (textIdentity) textIdentity.classList.add('hien-thi');
             khungMat.classList.add('asking-identity');
+
+            const switchPill = document.getElementById('recipient-switch-pill');
+            if (switchPill) switchPill.style.display = 'none';
+
             if (recipientSelector) {
                 recipientSelector.classList.add('hien-thi');
                 recipientSelector.querySelectorAll('.recipient-circle').forEach(btn => {
                     btn.classList.remove('selected', 'faded');
                 });
-                const pill = document.getElementById('recipient-confirm-pill');
-                if (pill) pill.style.display = 'none';
+                const cur = window.TINY_RECIPIENT;
+                if (cur) {
+                    const activeBtn = recipientSelector.querySelector(`.recipient-circle[data-recipient="${cur}"]`);
+                    if (activeBtn) activeBtn.classList.add('selected');
+                    const statusEl = document.getElementById('recipient-music-status');
+                    if (statusEl && window.TINY_RECIPIENT_CONFIG[cur]) {
+                        const conf = window.TINY_RECIPIENT_CONFIG[cur];
+                        statusEl.innerHTML = `<span class="music-wave-icon">🎵</span> Đang phát nhạc riêng: <b>${conf.songTitle}</b> (${conf.name})`;
+                        statusEl.style.display = 'block';
+                    }
+                    const pillName = document.getElementById('pill-recipient-name');
+                    if (pillName && window.TINY_RECIPIENT_CONFIG[cur]) pillName.textContent = window.TINY_RECIPIENT_CONFIG[cur].name;
+                    const pill = document.getElementById('recipient-confirm-pill');
+                    if (pill) pill.style.display = 'block';
+                } else {
+                    const pill = document.getElementById('recipient-confirm-pill');
+                    if (pill) pill.style.display = 'none';
+                    const statusEl = document.getElementById('recipient-music-status');
+                    if (statusEl) statusEl.style.display = 'none';
+                }
             }
             canClick = true;
         }
@@ -8561,11 +8704,12 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
 
         // Tiến vào cảnh tiếp theo sau cổng danh tính
         function advanceFromIdentityGate() {
+            console.log('[DEBUG] advanceFromIdentityGate called! isAdvancing:', isIdentityGateAdvancing);
             if (isIdentityGateAdvancing) return;
             if (!currentSelectedRecipient) {
-                currentSelectedRecipient = 'tquin';
-                applyRecipientTheme('tquin');
-                playRecipientTrack('tquin');
+                currentSelectedRecipient = window.TINY_RECIPIENT || 'tquin';
+                applyRecipientTheme(currentSelectedRecipient);
+                playRecipientTrack(currentSelectedRecipient);
             }
             isIdentityGateAdvancing = true;
             clearTimeout(recipientDebounceTimer);
@@ -8575,6 +8719,10 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             if (recipientSelector) recipientSelector.classList.remove('hien-thi');
             khungMat.classList.remove('asking-identity');
             isWaitingForRecipientSelection = false;
+
+            // Hiển thị nút đổi người nhận nổi ở góc để chuyển bất kỳ lúc nào
+            const switchPill = document.getElementById('recipient-switch-pill');
+            if (switchPill) switchPill.style.display = 'flex';
 
             // Gán clickCount = 2 hợp lệ và kích hoạt đúng logic gốc của cảnh nhận lệnh sếp Nguyên
             clickCount = 2;
@@ -8624,14 +8772,27 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                 });
             }
 
-            // Hẹn giờ tự động chuyển cảnh nếu người dùng không tương tác thêm (1800ms)
+            // Cập nhật trạng thái hiển thị bản nhạc riêng đang phát
+            const statusEl = document.getElementById('recipient-music-status');
+            if (statusEl && window.TINY_RECIPIENT_CONFIG[key]) {
+                const conf = window.TINY_RECIPIENT_CONFIG[key];
+                statusEl.innerHTML = `<span class="music-wave-icon">🎵</span> Đang phát nhạc riêng: <b>${conf.songTitle}</b> (${conf.name})`;
+                statusEl.style.display = 'block';
+            }
+
+            // Nút tiếp tục sẵn sàng
+            const pill = document.getElementById('recipient-confirm-pill');
+            const pillName = document.getElementById('pill-recipient-name');
+            if (pillName && window.TINY_RECIPIENT_CONFIG[key]) {
+                pillName.textContent = window.TINY_RECIPIENT_CONFIG[key].name;
+            }
+            if (pill) pill.style.display = 'block';
+
+            // Không tự ý ngắt ngang sau 1.8s để người dùng nghe và tự do đổi nhạc giữa 3 bạn.
             clearTimeout(recipientDebounceTimer);
-            recipientDebounceTimer = setTimeout(() => {
-                advanceFromIdentityGate();
-            }, 1800);
         }
 
-        // Lắng nghe sự kiện click chọn trên 3 vòng tròn và nút tiếp tục (Phase 1)
+        // Lắng nghe sự kiện click chọn trên 3 vòng tròn, nút tiếp tục và nút đổi bạn
         if (recipientSelector) {
             recipientSelector.querySelectorAll('.recipient-circle').forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -8648,6 +8809,29 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                 });
             }
         }
+
+        // Lắng nghe nút đổi người nhận bất kỳ lúc nào
+        const switchPillBtn = document.getElementById('recipient-switch-pill');
+        if (switchPillBtn) {
+            switchPillBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                hienThiCongChonDanhTinh();
+            });
+        }
+
+        // Tự động nhận diện deep link ?for=tquin, ?for=nhi, ?for=huong
+        (function initFromUrl() {
+            try {
+                const sp = new URLSearchParams(window.location.search);
+                const forVal = (sp.get('for') || '').toLowerCase();
+                if (['tquin', 'nhi', 'huong'].includes(forVal)) {
+                    applyRecipientTheme(forVal);
+                    if (tinySoundtrack && window.TINY_RECIPIENT_CONFIG[forVal]) {
+                        tinySoundtrack.src = window.TINY_RECIPIENT_CONFIG[forVal].musicSrc;
+                    }
+                }
+            } catch (_) {}
+        })();
 
         // Chuyển cảnh: click chuột trên PC hoặc chạm màn hình trên mobile
         function chuyenCanh() {
@@ -12258,7 +12442,7 @@ function capNhatSpritesChoNguoiNhan() {
  const modalPrice=document.getElementById('shop-modal-price');
  const modalRandom=document.getElementById('shop-modal-random');
  const modalBuy=document.getElementById('shop-modal-buy');
- const girlNotes=['cái này hợp với bạn nè','vòi người yêu mua này nè','bạn dùng thì sẽ rất xinh','món này cũng hợp với bạn luôn'];
+ const girlNotes=['cái này hợp với bạn nè','chọn món mình thích nha','bạn dùng thì sẽ rất xinh','món này cũng hợp với bạn luôn'];
  const boyNotes=['mua ngay cho bạn nữ nào','đến lúc thể hiện tình cảm rồi','mạnh dạn lên nào','cái này sẽ khiến bạn ấy vui đấy'];
  function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
  function openProductModal(link){
