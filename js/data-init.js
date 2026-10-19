@@ -57,11 +57,20 @@ function resolveMusicUrl(music) {
 // Export cho loader.js dùng chung
 window.resolveMusicUrl = resolveMusicUrl;
 
-const DEFAULT_IMAGES = [
-  'assets/image/photo1.png',
-  'assets/image/photo2.png',
-  'assets/image/photo3.png',
-];
+function getPersonalizedImages() {
+  const key = window.TINY_RECIPIENT || 'tquin';
+  if (window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[key] && window.TINY_RECIPIENT_CONFIG[key].images) {
+    return window.TINY_RECIPIENT_CONFIG[key].images;
+  }
+  return [
+    'assets/image/personalized/' + key + '.png',
+    'assets/image/personalized/' + key + '-avatar.png'
+  ];
+}
+
+const DEFAULT_IMAGES = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+  ? window.LOVEGIFT_IMAGES
+  : getPersonalizedImages();
 
 /* ── Dữ liệu mặc định (fallback khi không có server) ────── */
 const DEFAULT = {
@@ -73,7 +82,11 @@ const DEFAULT = {
     'Mong thế giới này luôn đối đãi với bạn thật dịu dàng 🌸',
     'Ngày 20/10 thật an yên, rạng rỡ và ngập tràn yêu thương nhé 💕'
   ],
-  images:   DEFAULT_IMAGES,
+  get images() {
+    return (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+      ? window.LOVEGIFT_IMAGES
+      : getPersonalizedImages();
+  },
 };
 
 /* ── Đọc URL params ──────────────────────────────────────── */

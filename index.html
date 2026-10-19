@@ -593,38 +593,62 @@ window.TINY_PERF = (() => {
         }
 
         .circle-avatar-wrap {
-            width: 62%;
-            height: 62%;
+            width: 68%;
+            height: 68%;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.02) 75%);
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(15,23,42,0.6) 80%);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 14px rgba(0, 0, 0, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.35s ease;
         }
 
         .recipient-avatar {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
+            z-index: 2;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .recipient-circle:hover .recipient-avatar,
+        .recipient-circle.selected .recipient-avatar {
+            transform: scale(1.1);
+        }
+
+        .recipient-circle.selected .circle-avatar-wrap {
+            border-color: #ffffff;
+            box-shadow: 0 0 22px rgba(255, 255, 255, 0.95), inset 0 0 14px rgba(255, 255, 255, 0.4);
         }
 
         .recipient-fallback-icon {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
             font-size: clamp(26px, 3.4vw, 40px);
             line-height: 1;
             filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
         }
 
         .recipient-name {
-            margin-top: 6px;
+            margin-top: 5px;
             font-family: 'Courier Prime', monospace;
-            font-size: clamp(14px, 1.6vw, 19px);
+            font-size: clamp(13px, 1.5vw, 17px);
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.8);
-            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 12px rgba(255,255,255,0.7);
+            letter-spacing: 0.8px;
+            z-index: 3;
         }
 
         /* =========================================================
@@ -7507,21 +7531,21 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
       <div class="recipient-circles-row">
         <button type="button" class="recipient-circle" data-recipient="tquin" aria-label="Chọn TQuin">
           <div class="circle-avatar-wrap">
-            <img class="recipient-avatar" src="" alt="TQuin" onerror="this.style.display='none'" />
+            <img class="recipient-avatar" src="assets/image/personalized/tquin-avatar.png" alt="TQuin" onerror="this.style.display='none'" />
             <span class="recipient-fallback-icon">🌹</span>
           </div>
           <span class="recipient-name">TQuin</span>
         </button>
         <button type="button" class="recipient-circle" data-recipient="nhi" aria-label="Chọn Nhi">
           <div class="circle-avatar-wrap">
-            <img class="recipient-avatar" src="" alt="Nhi" onerror="this.style.display='none'" />
+            <img class="recipient-avatar" src="assets/image/personalized/nhi-avatar.png" alt="Nhi" onerror="this.style.display='none'" />
             <span class="recipient-fallback-icon">💠</span>
           </div>
           <span class="recipient-name">Nhi</span>
         </button>
         <button type="button" class="recipient-circle" data-recipient="huong" aria-label="Chọn Hương">
           <div class="circle-avatar-wrap">
-            <img class="recipient-avatar" src="" alt="Hương" onerror="this.style.display='none'" />
+            <img class="recipient-avatar" src="assets/image/personalized/huong-avatar.png" alt="Hương" onerror="this.style.display='none'" />
             <span class="recipient-fallback-icon">🍭</span>
           </div>
           <span class="recipient-name">Hương</span>
@@ -8034,7 +8058,11 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             tquin: {
                 id: "tquin",
                 name: "TQuin",
-                avatarUrl: "",
+                avatarUrl: "assets/image/personalized/tquin-avatar.png",
+                images: [
+                    "assets/image/personalized/tquin.png",
+                    "assets/image/personalized/tquin-avatar.png"
+                ],
                 fallbackEmoji: "🌹",
                 giftType: "red-rose",
                 giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-red">đóa hoa hồng</span> này',
@@ -8068,7 +8096,11 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             nhi: {
                 id: "nhi",
                 name: "Nhi",
-                avatarUrl: "",
+                avatarUrl: "assets/image/personalized/nhi-avatar.png",
+                images: [
+                    "assets/image/personalized/nhi.png",
+                    "assets/image/personalized/nhi-avatar.png"
+                ],
                 fallbackEmoji: "💠",
                 giftType: "blue-rose",
                 giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-blue">đóa hoa hồng</span> này',
@@ -8100,7 +8132,11 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             huong: {
                 id: "huong",
                 name: "Hương",
-                avatarUrl: "",
+                avatarUrl: "assets/image/personalized/huong-avatar.png",
+                images: [
+                    "assets/image/personalized/huong.png",
+                    "assets/image/personalized/huong-avatar.png"
+                ],
                 fallbackEmoji: "🍭",
                 giftType: "lollipop",
                 giftTextHtml: 'Tớ tặng cậu <span class="clover-word gift-candy">cây kẹo ngọt ngào</span> này',
@@ -8681,6 +8717,16 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
 
             // Slot 6: Lời chúc 6 -> Cảnh 3D / Love Rain / Popup
             window.__personalizedWish6 = config.wishes[5];
+            const personImages = (config && config.images && config.images.length > 0)
+                ? config.images
+                : [
+                    'assets/image/personalized/' + key + '.png',
+                    'assets/image/personalized/' + key + '-avatar.png'
+                ];
+            window.LOVEGIFT_IMAGES = personImages;
+            if (window.FallingLoveData) {
+                window.FallingLoveData.images = personImages;
+            }
             if (window.dataChristmasTree) {
                 window.dataChristmasTree.popupMessage = config.wishes[5];
                 window.dataChristmasTree.messages = [config.wishes[0], config.wishes[1], config.wishes[5]];
@@ -8688,6 +8734,17 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             if (window.Heartlove && window.Heartlove.data) {
                 window.Heartlove.data.popupMessage = config.wishes[5];
                 window.Heartlove.data.messages = [config.wishes[0], config.wishes[1], config.wishes[5]];
+                window.Heartlove.data.images = personImages;
+            }
+            const appEl = document.getElementById('app');
+            if (appEl && appEl.dataset && appEl.dataset.page) {
+                try {
+                    const pd = JSON.parse(appEl.dataset.page);
+                    if (pd && pd.props && pd.props.client) {
+                        pd.props.client.images = personImages;
+                        appEl.dataset.page = JSON.stringify(pd);
+                    }
+                } catch (e) {}
             }
 
             // Cập nhật nhãn nút tiếp tục
@@ -13402,19 +13459,23 @@ if(window.TINY_PERF && !window.TINY_PERF.mobile){
         LoadingScreen.setMessage('Đang chuẩn bị câu chúc 20/10 và ảnh kỷ niệm...');
         LoadingScreen.setProgress(35);
 
-        var defaultPhotos = [
-          "assets/image/photo1.png",
-          "assets/image/photo2.png",
-          "assets/image/photo3.png"
-        ];
-        var photoUrls = defaultPhotos;
-        if (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0) {
-          photoUrls = window.LOVEGIFT_IMAGES;
-        } else if (window.FallingLoveData && window.FallingLoveData.images && window.FallingLoveData.images.length > 0) {
-          photoUrls = window.FallingLoveData.images;
-        } else if (window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0) {
-          photoUrls = window.Heartlove.data.images;
-        }
+        var recipientKey = window.TINY_RECIPIENT || 'tquin';
+        var recipientConf = (window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[recipientKey]);
+        var personalizedPhotos = (recipientConf && recipientConf.images && recipientConf.images.length > 0)
+          ? recipientConf.images
+          : [
+            "assets/image/personalized/" + recipientKey + ".png",
+            "assets/image/personalized/" + recipientKey + "-avatar.png"
+          ];
+
+        var photoUrls = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+          ? window.LOVEGIFT_IMAGES
+          : ((window.FallingLoveData && window.FallingLoveData.images && window.FallingLoveData.images.length > 0)
+            ? window.FallingLoveData.images
+            : ((window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
+              ? window.Heartlove.data.images
+              : personalizedPhotos));
+        window.LOVEGIFT_IMAGES = photoUrls;
 
         LoadingScreen.setMessage('Đang tải hình ảnh kỷ niệm...');
         var loaded = 0;

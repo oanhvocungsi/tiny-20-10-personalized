@@ -8,16 +8,23 @@
  *          loader.js await Promise → applyConfig → startApp
  */
 (function () {
-  var defaultPhotos = [
-    "assets/image/photo1.png",
-    "assets/image/photo2.png",
-    "assets/image/photo3.png"
-  ];
+  function getRecipientPhotos() {
+    var key = window.TINY_RECIPIENT || 'tquin';
+    if (window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[key] && window.TINY_RECIPIENT_CONFIG[key].images) {
+      return window.TINY_RECIPIENT_CONFIG[key].images;
+    }
+    return [
+      "assets/image/personalized/" + key + ".png",
+      "assets/image/personalized/" + key + "-avatar.png"
+    ];
+  }
+
+  var defaultPhotos = getRecipientPhotos();
 
   if (!window.LOVEGIFT_IMAGES || window.LOVEGIFT_IMAGES.length === 0) {
     window.LOVEGIFT_IMAGES = (window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
       ? window.Heartlove.data.images
-      : defaultPhotos;
+      : getRecipientPhotos();
   }
 
   /**
@@ -142,10 +149,12 @@
         console.log('📥 [Loader] Config from DataInit:', cfg);
         applyConfig(cfg);
       } else {
-        console.warn('[Loader] Không có dữ liệu từ API — dùng default');
-        window.LOVEGIFT_IMAGES = (window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
-          ? window.Heartlove.data.images
-          : defaultPhotos;
+        console.warn('[Loader] Không có dữ liệu từ API — dùng personalized default');
+        window.LOVEGIFT_IMAGES = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+          ? window.LOVEGIFT_IMAGES
+          : ((window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
+            ? window.Heartlove.data.images
+            : getRecipientPhotos());
       }
     }).catch(function (err) {
       console.error('[Loader] Lỗi await config:', err);
@@ -194,14 +203,18 @@
           window.LOVEGIFT_IMAGES = [];
         }
       } else {
-        window.LOVEGIFT_IMAGES = (window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
-          ? window.Heartlove.data.images
-          : defaultPhotos;
+        window.LOVEGIFT_IMAGES = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+          ? window.LOVEGIFT_IMAGES
+          : ((window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
+            ? window.Heartlove.data.images
+            : getRecipientPhotos());
       }
     } else {
-      window.LOVEGIFT_IMAGES = (window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
-        ? window.Heartlove.data.images
-        : defaultPhotos;
+      window.LOVEGIFT_IMAGES = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+        ? window.LOVEGIFT_IMAGES
+        : ((window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
+          ? window.Heartlove.data.images
+          : getRecipientPhotos());
     }
     autoStart();
   }
