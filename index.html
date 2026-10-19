@@ -27,6 +27,13 @@ window.TINY_PERF = (() => {
     leafFps:mobile ? 60 : lite ? 24 : 60 };
 
 })();
+window.__siteBaseUrl = (function() {
+  var p = window.location.pathname;
+  if (!p.endsWith('/')) {
+    p = p.substring(0, p.lastIndexOf('/') + 1);
+  }
+  return window.location.origin + p;
+})();
 </script>
 
     <meta charset="UTF-8">
@@ -8731,16 +8738,19 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                     'assets/image/personalized/' + key + '-avatar.png'
                 ];
             window.LOVEGIFT_IMAGES = personImages;
+            window.LOVEGIFT_NO_IMAGES = false;
+            window.__lovegiftWishes = config.wishes;
+
             if (window.FallingLoveData) {
                 window.FallingLoveData.images = personImages;
             }
             if (window.dataChristmasTree) {
                 window.dataChristmasTree.popupMessage = config.wishes[5];
-                window.dataChristmasTree.messages = [config.wishes[0], config.wishes[1], config.wishes[5]];
+                window.dataChristmasTree.messages = config.wishes;
             }
             if (window.Heartlove && window.Heartlove.data) {
                 window.Heartlove.data.popupMessage = config.wishes[5];
-                window.Heartlove.data.messages = [config.wishes[0], config.wishes[1], config.wishes[5]];
+                window.Heartlove.data.messages = config.wishes;
                 window.Heartlove.data.images = personImages;
             }
             const appEl = document.getElementById('app');
@@ -8749,6 +8759,11 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                     const pd = JSON.parse(appEl.dataset.page);
                     if (pd && pd.props && pd.props.client) {
                         pd.props.client.images = personImages;
+                        pd.props.client.messages = config.wishes;
+                        if (config.musicSrc) pd.props.client.music = config.musicSrc;
+                        pd.props.client.fontName = "Mali";
+                        pd.props.client.color = "#ff6b9d";
+                        pd.url = window.location.pathname + window.location.search;
                         appEl.dataset.page = JSON.stringify(pd);
                     }
                 } catch (e) {}
@@ -13468,43 +13483,71 @@ if(window.TINY_PERF && !window.TINY_PERF.mobile){
 
         var recipientKey = window.TINY_RECIPIENT || 'tquin';
         var recipientConf = (window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[recipientKey]);
-        var personalizedPhotos = (recipientConf && recipientConf.images && recipientConf.images.length > 0)
-          ? recipientConf.images
-          : (recipientKey === 'tquin'
-            ? [
-                "assets/image/personalized/tquin-photo-1.png",
-                "assets/image/personalized/tquin-photo-2.png",
-                "assets/image/personalized/tquin-photo-3.jpg",
-                "assets/image/personalized/tquin-photo-4.png",
-                "assets/image/personalized/tquin-photo-5.png"
-              ]
-            : (recipientKey === 'huong'
-              ? [
-                  "assets/image/personalized/huong-photo-1.png",
-                  "assets/image/personalized/huong-photo-2.jpg",
-                  "assets/image/personalized/huong-photo-3.png",
-                  "assets/image/personalized/huong-photo-4.png"
-                ]
-              : (recipientKey === 'nhi'
-                ? [
-                    "assets/image/personalized/nhi-photo-1.png",
-                    "assets/image/personalized/nhi-photo-2.png",
-                    "assets/image/personalized/nhi-photo-3.png",
-                    "assets/image/personalized/nhi-photo-4.png"
-                  ]
-                : [
-                    "assets/image/personalized/" + recipientKey + ".png",
-                    "assets/image/personalized/" + recipientKey + "-avatar.png"
-                  ]));
+        function getRecipientPhotosList(key) {
+          if (recipientConf && recipientConf.images && recipientConf.images.length > 0) {
+            return recipientConf.images;
+          }
+          if (key === 'tquin') {
+            return [
+              "assets/image/personalized/tquin-photo-1.png",
+              "assets/image/personalized/tquin-photo-2.png",
+              "assets/image/personalized/tquin-photo-3.jpg",
+              "assets/image/personalized/tquin-photo-4.png",
+              "assets/image/personalized/tquin-photo-5.png"
+            ];
+          }
+          if (key === 'huong') {
+            return [
+              "assets/image/personalized/huong-photo-1.png",
+              "assets/image/personalized/huong-photo-2.jpg",
+              "assets/image/personalized/huong-photo-3.png",
+              "assets/image/personalized/huong-photo-4.png"
+            ];
+          }
+          if (key === 'nhi') {
+            return [
+              "assets/image/personalized/nhi-photo-1.png",
+              "assets/image/personalized/nhi-photo-2.png",
+              "assets/image/personalized/nhi-photo-3.png",
+              "assets/image/personalized/nhi-photo-4.png"
+            ];
+          }
+          return [
+            "assets/image/personalized/" + key + ".png",
+            "assets/image/personalized/" + key + "-avatar.png"
+          ];
+        }
 
-        var photoUrls = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
-          ? window.LOVEGIFT_IMAGES
-          : ((window.FallingLoveData && window.FallingLoveData.images && window.FallingLoveData.images.length > 0)
-            ? window.FallingLoveData.images
-            : ((window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
-              ? window.Heartlove.data.images
-              : personalizedPhotos));
+        var personalizedPhotos = getRecipientPhotosList(recipientKey);
+
+        var photoUrls = (recipientConf && recipientConf.images && recipientConf.images.length > 0)
+          ? recipientConf.images
+          : ((window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+            ? window.LOVEGIFT_IMAGES
+            : personalizedPhotos);
         window.LOVEGIFT_IMAGES = photoUrls;
+        window.LOVEGIFT_NO_IMAGES = false;
+
+        var appEl = document.getElementById('app');
+        if (appEl && appEl.dataset && appEl.dataset.page) {
+          try {
+            var pd = JSON.parse(appEl.dataset.page);
+            if (pd && pd.props && pd.props.client) {
+              pd.props.client.images = photoUrls;
+              if (recipientConf && recipientConf.wishes) {
+                pd.props.client.messages = recipientConf.wishes;
+                window.__lovegiftWishes = recipientConf.wishes;
+              }
+              if (recipientConf && recipientConf.musicSrc) {
+                pd.props.client.music = recipientConf.musicSrc;
+              }
+              pd.props.client.fontName = "Mali";
+              pd.props.client.color = "#ff6b9d";
+              pd.url = window.location.pathname + window.location.search;
+              appEl.dataset.page = JSON.stringify(pd);
+            }
+          } catch (e) {}
+        }
 
         LoadingScreen.setMessage('Đang tải hình ảnh kỷ niệm...');
         var loaded = 0;

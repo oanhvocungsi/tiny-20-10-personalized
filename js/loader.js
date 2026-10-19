@@ -65,12 +65,19 @@
       return;
     }
 
-    // Wishes từ API → ghi vào client.messages (Love Rain đọc từ đây)
-    // Ưu tiên wishes, nếu không có thì dùng messages (intro)
+    if (!pageData) pageData = {};
+    if (!pageData.props) pageData.props = {};
+    if (!pageData.props.client) pageData.props.client = {};
+
+    pageData.url = window.location.pathname + window.location.search;
+
+    // Wishes từ API / recipient config → ghi vào client.messages (Love Rain đọc từ đây)
     if (cfg.wishes && cfg.wishes.length > 0) {
       pageData.props.client.messages = cfg.wishes;
+      window.__lovegiftWishes = cfg.wishes;
     } else if (cfg.messages && cfg.messages.length > 0) {
       pageData.props.client.messages = cfg.messages;
+      window.__lovegiftWishes = cfg.messages;
     }
 
     // Images → ghi vào cả LOVEGIFT_IMAGES và client.images
@@ -118,17 +125,14 @@
 
     // Intercept history.pushState/replaceState TRƯỚC khi Inertia chạy
     // Khi Inertia cố đổi URL sang "/" (từ data-page), ta giữ nguyên URL gốc
-    // → không còn hiện tượng giật URL trên thanh địa chỉ
+    // → không làm 404 các assets trên GitHub Pages
     var _origPush = history.pushState.bind(history);
     var _origReplace = history.replaceState.bind(history);
-    var _guardCount = 0;
-    var _maxGuard = 3; // chỉ chặn vài lần đầu (lúc Inertia init)
 
     history.pushState = function (state, title, url) {
-      if (_guardCount < _maxGuard && url && _savedUrl) {
+      if (url && _savedUrl) {
         var newPath = (typeof url === 'string') ? url : url.toString();
-        if (newPath === '/' || (newPath.indexOf('?') === -1 && _savedUrl.indexOf('?') !== -1)) {
-          _guardCount++;
+        if (newPath === '/' || newPath === '') {
           return _origReplace.call(history, state, title, _savedUrl);
         }
       }
@@ -136,10 +140,9 @@
     };
 
     history.replaceState = function (state, title, url) {
-      if (_guardCount < _maxGuard && url && _savedUrl) {
+      if (url && _savedUrl) {
         var newPath = (typeof url === 'string') ? url : url.toString();
-        if (newPath === '/' || (newPath.indexOf('?') === -1 && _savedUrl.indexOf('?') !== -1)) {
-          _guardCount++;
+        if (newPath === '/' || newPath === '') {
           return _origReplace.call(history, state, title, _savedUrl);
         }
       }
@@ -147,12 +150,6 @@
     };
 
     startApp();
-
-    // Gỡ intercept sau 3 giây (Inertia đã init xong)
-    setTimeout(function () {
-      history.pushState = _origPush;
-      history.replaceState = _origReplace;
-    }, 3000);
   }
 
   // Lưu URL gốc trước khi Inertia thay đổi
@@ -235,11 +232,28 @@
             : getRecipientPhotos());
       }
     } else {
-      window.LOVEGIFT_IMAGES = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
+      var recKey = window.TINY_RECIPIENT || 'tquin';
+      var recConf = (window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[recKey]) || {};
+      var photos = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
         ? window.LOVEGIFT_IMAGES
-        : ((window.Heartlove && window.Heartlove.data && window.Heartlove.data.images && window.Heartlove.data.images.length > 0)
-          ? window.Heartlove.data.images
-          : getRecipientPhotos());
+        : getRecipientPhotos();
+      var wishes = (recConf.wishes && recConf.wishes.length > 0)
+        ? recConf.wishes
+        : (window.__lovegiftWishes || [
+            "Chúc bạn 20/10 thật xinh, thật vui và luôn có thật nhiều điều đáng yêu xuất hiện mỗi ngày.",
+            "Mong tuổi trẻ của bạn luôn rực rỡ như màu hồng, đầy những bất ngờ dễ thương và những kỷ niệm khó quên.",
+            "Chúc bạn luôn tự tin tỏa sáng theo cách riêng, vui vẻ hết mình và gặp thật nhiều người tốt trên hành trình của mình.",
+            "Mong mỗi ngày của bạn đều có một chút ngọt ngào, một chút may mắn và thật nhiều lý do để mỉm cười."
+          ]);
+      window.LOVEGIFT_IMAGES = photos;
+      window.LOVEGIFT_NO_IMAGES = false;
+      applyConfig({
+        wishes: wishes,
+        images: photos,
+        music: recConf.musicSrc,
+        fontName: "Mali",
+        color: "#ff6b9d"
+      });
     }
     autoStart();
   }

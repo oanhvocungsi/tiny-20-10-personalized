@@ -6708,12 +6708,30 @@ function Hr({ color: e, messages: t, fontName: i }) {
   );
   const rows = isTabletOrMob ? 7 : 10;
   const cols = isTabletOrMob ? 14 : 20;
+
+  const recKey = (typeof window !== "undefined" && window.TINY_RECIPIENT) || 'tquin';
+  const recConf = (typeof window !== "undefined" && window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[recKey]);
+  const fallbackWishes = (recConf && recConf.wishes && recConf.wishes.length > 0)
+    ? recConf.wishes
+    : ((typeof window !== "undefined" && window.__lovegiftWishes && window.__lovegiftWishes.length > 0)
+      ? window.__lovegiftWishes
+      : [
+          "Chúc bạn 20/10 ngập tràn niềm vui, luôn xinh đẹp và rạng rỡ 💕",
+          "Mong tuổi trẻ của bạn luôn rực rỡ, đầy những bất ngờ dễ thương và kỷ niệm khó quên 🌸",
+          "Hãy luôn tự tin, tự yêu và tỏa sáng theo phong cách riêng của chính mình ✨",
+          "20/10 hạnh phúc nhé, mong mọi điều tốt đẹp nhất luôn đến với bạn 💖"
+        ]);
+
+  const rawList = (Array.isArray(t) && t.length > 0) ? t : fallbackWishes;
+  const cleanList = rawList.filter(m => m && typeof m === 'string' && m.trim().length > 0);
+  const messagesList = cleanList.length > 0 ? cleanList : fallbackWishes;
+
   const o = [];
   let a = 0;
   for (let l = 0; l < rows; l++)
     for (let d = 0; d < cols; d++) {
-      const m = t[a % t.length],
-        f = m.length > 20,
+      const m = String(messagesList[a % messagesList.length]);
+      const f = m.length > 20,
         y = f ? 6 : 3;
       const xStep = isTabletOrMob ? (19 / 13) : 1;
       const zStep = isTabletOrMob ? (9 / 6) : 1;
@@ -6757,8 +6775,9 @@ function Nr({
     y = new He("#99DDFF"),
     v = new He(),
     O = 2.5,
+    safeText = String(e || "Chúc bạn 20/10 vui vẻ 💕"),
     S = M.useMemo(() => {
-      const w = e.split(/(\s+)/);
+      const w = safeText.split(/(\s+)/);
       let h = 0,
         p = "";
       return (
@@ -6775,7 +6794,7 @@ function Nr({
         }),
         p.trim()
       );
-    }, [e]);
+    }, [safeText]);
   return (
     Je((w) => {
       if (l.current && l.current && d.current) {
@@ -6916,13 +6935,41 @@ function kr({ color: e }) {
 }
 class PhotoTexLoader {
   load(e, t, i, s) {
+    function createFallbackTexture() {
+      const c = document.createElement("canvas");
+      c.width = 4;
+      c.height = 4;
+      const m = new Rs();
+      m.image = c;
+      m.aspectRatio = 1;
+      m.needsUpdate = true;
+      m.colorSpace = q;
+      t(m);
+    }
+
+    if (!e || typeof e !== 'string') {
+      createFallbackTexture();
+      return;
+    }
+
+    // Resolve relative paths safely to avoid 404 on GitHub Pages or nested routes
+    let resolvedUrl = e;
+    try {
+      if (!resolvedUrl.startsWith("http://") && !resolvedUrl.startsWith("https://") && !resolvedUrl.startsWith("data:") && !resolvedUrl.startsWith("blob:")) {
+        const baseHref = (document.querySelector('base') && document.querySelector('base').href) || (typeof window !== 'undefined' && window.__siteBaseUrl) || (typeof window !== 'undefined' ? window.location.href : '');
+        if (baseHref) {
+          const dir = baseHref.endsWith('/') ? baseHref : baseHref.substring(0, baseHref.lastIndexOf('/') + 1);
+          resolvedUrl = new URL(resolvedUrl.replace(/^\/+/, ''), dir).href;
+        }
+      }
+    } catch (_) {}
 
     // Hàm xử lý khi image load thành công → vẽ lên canvas → tạo texture
     function processImage(img) {
       try {
         const pad = 18;
         const maxEdge = 512;
-        const imgAspect = img.width / img.height;
+        const imgAspect = (img && img.height) ? (img.width / img.height) : 1;
         let targetW, targetH;
         if (imgAspect >= 1) {
           targetW = maxEdge;
@@ -6993,8 +7040,8 @@ class PhotoTexLoader {
         console.warn("[PhotoTexLoader] processImage error, using raw image:", err);
         try {
           var c = document.createElement("canvas");
-          c.width = Math.min(img.width, 512);
-          c.height = Math.min(img.height, 512);
+          c.width = Math.min((img && img.width) || 100, 512);
+          c.height = Math.min((img && img.height) || 100, 512);
           var cx = c.getContext("2d");
           cx.drawImage(img, 0, 0, c.width, c.height);
           var m2 = new Rs();
@@ -7010,57 +7057,47 @@ class PhotoTexLoader {
       }
     }
 
-    // Hàm tạo texture placeholder trong suốt (không crash useLoader)
-    function createFallbackTexture() {
-      const c = document.createElement("canvas");
-      c.width = 4;
-      c.height = 4;
-      const m = new Rs();
-      m.image = c;
-      m.needsUpdate = true;
-      t(m);
-    }
-
     // Kiểm tra URL cross-origin
-    const isCrossOrigin = e.startsWith("http") && !e.includes(window.location.host);
+    const isCrossOrigin = resolvedUrl.startsWith("http") && !resolvedUrl.includes(window.location.host);
 
     if (isCrossOrigin) {
-      console.log('🖼️ [PhotoTexLoader] Loading cross-origin:', e);
+      console.log('🖼️ [PhotoTexLoader] Loading cross-origin:', resolvedUrl);
 
       // Bước 1: Thử trực tiếp với crossOrigin (nếu R2 đã cấu hình CORS)
       var img1 = new Image();
       img1.crossOrigin = "anonymous";
       img1.onload = function () {
-        console.log('✅ [PhotoTexLoader] CORS direct OK:', e);
+        console.log('✅ [PhotoTexLoader] CORS direct OK:', resolvedUrl);
         processImage(img1);
       };
       img1.onerror = function () {
         // Bước 2: CORS chưa cấu hình → dùng wsrv.nl image proxy
         // wsrv.nl là CDN proxy miễn phí, tự thêm CORS header
-        var proxyUrl = 'https://wsrv.nl/?url=' + encodeURIComponent(e) + '&default=1';
+        var proxyUrl = 'https://wsrv.nl/?url=' + encodeURIComponent(resolvedUrl) + '&default=1';
         console.warn('⚠️ [PhotoTexLoader] CORS failed → proxy:', proxyUrl);
         var img2 = new Image();
         img2.crossOrigin = "anonymous";
         img2.onload = function () {
-          console.log('✅ [PhotoTexLoader] Proxy OK:', e, img2.width + 'x' + img2.height);
+          console.log('✅ [PhotoTexLoader] Proxy OK:', resolvedUrl, img2.width + 'x' + img2.height);
           processImage(img2);
         };
         img2.onerror = function () {
-          console.error('❌ [PhotoTexLoader] Proxy cũng failed:', e);
+          console.error('❌ [PhotoTexLoader] Proxy cũng failed:', resolvedUrl);
           createFallbackTexture();
         };
         img2.src = proxyUrl;
       };
-      img1.src = e;
+      img1.src = resolvedUrl;
     } else {
       // Same-origin → load + xử lý canvas (rounded corners, filters)
       const n = new Image();
+      n.crossOrigin = "anonymous";
       n.onload = function () { processImage(n); };
       n.onerror = function () {
-        console.warn("[PhotoTexLoader] Image load failed:", e);
+        console.warn("[PhotoTexLoader] Image load failed:", resolvedUrl);
         createFallbackTexture();
       };
-      n.src = e;
+      n.src = resolvedUrl;
     }
   }
 }
@@ -7076,7 +7113,7 @@ function PhotoRainItem({ url, startX: e, startZ: t, speed: i, offsetY: s, seed: 
   const bottomY = -40;
   const range = topY - bottomY;
 
-  const aspect = a.aspectRatio || (a.image ? a.image.width / a.image.height : 1);
+  const aspect = (a && (a.aspectRatio || (a.image && a.image.height ? a.image.width / a.image.height : 1))) || 1;
   const scaleX = aspect >= 1 ? baseSize : baseSize * aspect;
   const scaleY = aspect >= 1 ? baseSize / aspect : baseSize;
 
@@ -7112,10 +7149,14 @@ function PhotoRain() {
     return null;
   }
 
+  const recKey = (typeof window !== "undefined" && window.TINY_RECIPIENT) || 'tquin';
+  const recConf = (typeof window !== "undefined" && window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[recKey]);
+  const recImgs = (recConf && recConf.images && recConf.images.length > 0) ? recConf.images : null;
+
   const photoUrls =
     (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
       ? window.LOVEGIFT_IMAGES
-      : defaultPhotoUrls;
+      : (recImgs || defaultPhotoUrls);
 
   console.log('🖼️ [PhotoRain] → Sử dụng', photoUrls.length, 'ảnh:', photoUrls);
 
