@@ -8101,8 +8101,10 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                 name: "Nhi",
                 avatarUrl: "assets/image/personalized/nhi-avatar.png",
                 images: [
-                    "assets/image/personalized/nhi.png",
-                    "assets/image/personalized/nhi-avatar.png"
+                    "assets/image/personalized/nhi-photo-1.png",
+                    "assets/image/personalized/nhi-photo-2.png",
+                    "assets/image/personalized/nhi-photo-3.png",
+                    "assets/image/personalized/nhi-photo-4.png"
                 ],
                 fallbackEmoji: "💠",
                 giftType: "blue-rose",
@@ -13483,10 +13485,17 @@ if(window.TINY_PERF && !window.TINY_PERF.mobile){
                   "assets/image/personalized/huong-photo-3.png",
                   "assets/image/personalized/huong-photo-4.png"
                 ]
-              : [
-                  "assets/image/personalized/" + recipientKey + ".png",
-                  "assets/image/personalized/" + recipientKey + "-avatar.png"
-                ]));
+              : (recipientKey === 'nhi'
+                ? [
+                    "assets/image/personalized/nhi-photo-1.png",
+                    "assets/image/personalized/nhi-photo-2.png",
+                    "assets/image/personalized/nhi-photo-3.png",
+                    "assets/image/personalized/nhi-photo-4.png"
+                  ]
+                : [
+                    "assets/image/personalized/" + recipientKey + ".png",
+                    "assets/image/personalized/" + recipientKey + "-avatar.png"
+                  ]));
 
         var photoUrls = (window.LOVEGIFT_IMAGES && window.LOVEGIFT_IMAGES.length > 0)
           ? window.LOVEGIFT_IMAGES

@@ -30,6 +30,14 @@
         "assets/image/personalized/huong-photo-4.png"
       ];
     }
+    if (key === 'nhi') {
+      return [
+        "assets/image/personalized/nhi-photo-1.png",
+        "assets/image/personalized/nhi-photo-2.png",
+        "assets/image/personalized/nhi-photo-3.png",
+        "assets/image/personalized/nhi-photo-4.png"
+      ];
+    }
     return [
       "assets/image/personalized/" + key + ".png",
       "assets/image/personalized/" + key + "-avatar.png"
