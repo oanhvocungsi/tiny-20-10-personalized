@@ -212,18 +212,22 @@ function z() {
     if (M && n) {
         M.quaternion.copy(n.quaternion);
     }
-    (window.Heartlove && window.Heartlove.data && window.Heartlove.data.messages
-        ? (x = window.Heartlove.data.messages)
-        : window.dataChristmasTree &&
-        window.dataChristmasTree.data &&
-        window.dataChristmasTree.data.messages &&
-        (x = window.dataChristmasTree.data.messages),
-        (x && 0 !== x.length) ||
-        (x = [
-            "Gửi đến em — cô gái dịu dàng và ấm áp nhất 💖",
-            "Mong thế giới này luôn đối đãi với em thật dịu dàng 🌸",
+    if (window.TINY_RECIPIENT && window.TINY_RECIPIENT_CONFIG && window.TINY_RECIPIENT_CONFIG[window.TINY_RECIPIENT]) {
+        const rc = window.TINY_RECIPIENT_CONFIG[window.TINY_RECIPIENT];
+        x = [rc.wishes[0], rc.wishes[1], rc.wishes[5]];
+    } else if (window.Heartlove && window.Heartlove.data && window.Heartlove.data.messages && window.Heartlove.data.messages.length) {
+        x = window.Heartlove.data.messages;
+    } else if (window.dataChristmasTree && window.dataChristmasTree.data && window.dataChristmasTree.data.messages && window.dataChristmasTree.data.messages.length) {
+        x = window.dataChristmasTree.data.messages;
+    } else if (window.dataChristmasTree && window.dataChristmasTree.messages && window.dataChristmasTree.messages.length) {
+        x = window.dataChristmasTree.messages;
+    } else {
+        x = [
+            "Gửi đến bạn — người bạn dịu dàng và ấm áp nhất 💖",
+            "Mong thế giới này luôn đối đãi với bạn thật dịu dàng 🌸",
             "Ngày 20/10 thật an yên, rạng rỡ và ngập tràn yêu thương nhé 💕"
-        ]));
+        ];
+    }
     const t = () => {
         (F(x[0]), (A = Date.now()));
     };

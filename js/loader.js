@@ -160,10 +160,10 @@
       try {
         var pageData = JSON.parse(sampleApp.dataset.page);
         pageData.props.client.messages = [
-          "Chúc em một đời an yên, bốn mùa đều có người chở che và yêu thương 🌸",
-          "Hãy luôn tự tin, tự yêu và tự tỏa sáng theo cách riêng của em nhé ✨",
-          "Nụ cười của em là điều đẹp đẽ nhất, hãy giữ nó mãi trên môi nhé ☀️",
-          "20/10 ngập tràn niềm vui, mong mọi điều ước của em đều thành hiện thực 💖"
+          "Chúc bạn một đời an yên, bốn mùa đều có niềm vui và hạnh phúc 🌸",
+          "Hãy luôn tự tin, tự yêu và tự tỏa sáng theo cách riêng của bạn nhé ✨",
+          "Nụ cười của bạn là điều đẹp đẽ nhất, hãy giữ nó mãi trên môi nhé ☀️",
+          "20/10 ngập tràn niềm vui, mong mọi điều ước của bạn đều thành hiện thực 💖"
         ];
         pageData.props.client.images = defaultPhotos;
         pageData.props.client.music = "assets/music/loveMusic/Hngle - Tìm em ft (mp3cut.net).mp3";
