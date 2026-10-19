@@ -1,0 +1,57 @@
+/* Tiny 20/10 — reusable animation primitives. Attach classes to existing DOM; do not replace original scenes. */
+:root {
+  --tiny-cyan: #00ffff;
+  --tiny-shy-pink: #ff9cbb;
+  --tiny-ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --tiny-ease-smooth: cubic-bezier(.22, 1, .36, 1);
+}
+#khung-mat.asking-identity {
+  animation: tiny-eye-glance 850ms var(--tiny-ease-smooth) both;
+}
+#tiny-question-mark {
+  transform-origin: 60% 80%;
+  animation: tiny-question-pop 720ms var(--tiny-ease-spring) both,
+             tiny-question-float 2.8s ease-in-out 720ms infinite;
+}
+#tiny-shy-fingers {
+  transform-origin: 50% 50%;
+  animation: tiny-fingers-pop 650ms var(--tiny-ease-spring) 120ms both,
+             tiny-fingers-shy 2.4s ease-in-out 800ms infinite;
+}
+.recipient-circle {
+  opacity: 0;
+  transform: translateY(24px) scale(.72);
+  animation: tiny-recipient-pop 620ms var(--tiny-ease-spring) forwards;
+}
+.recipient-circle:nth-child(2) { animation-delay: 120ms; }
+.recipient-circle:nth-child(3) { animation-delay: 240ms; }
+.recipient-circle:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+}
+.rose-bloom .petal-back { transform-origin: 50% 50%; animation: rose-bloom 1.15s var(--tiny-ease-smooth) both; }
+.rose-bloom .petal-mid { transform-origin: 50% 50%; animation: rose-bloom 1.15s var(--tiny-ease-smooth) 120ms both; }
+.rose-bloom .petal-inner { transform-origin: 50% 50%; animation: rose-bloom 1.15s var(--tiny-ease-smooth) 240ms both; }
+.candy-head-swirl, .candy-head { transform-box: fill-box; transform-origin: center; animation: candy-spin 5.5s linear infinite; }
+.gift-fly-to-viewer { animation: tiny-gift-delivery 2.45s var(--tiny-ease-smooth) both; }
+@keyframes tiny-eye-glance {
+  0% { transform: translateX(0) rotate(0); }
+  45% { transform: translateX(10px) rotate(1deg); }
+  72% { transform: translateX(7px) rotate(-.5deg); }
+  100% { transform: translateX(8px) rotate(0); }
+}
+@keyframes tiny-question-pop { 0% { opacity:0; transform: translateY(14px) scale(.35) rotate(-15deg); } 70% { opacity:1; transform: translateY(-4px) scale(1.12) rotate(5deg); } 100% { opacity:1; transform: translateY(0) scale(1) rotate(0); } }
+@keyframes tiny-question-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+@keyframes tiny-fingers-pop { from { opacity:0; transform: translateY(16px) scale(.7); } to { opacity:1; transform: translateY(0) scale(1); } }
+@keyframes tiny-fingers-shy { 0%,100% { translate:0 0; } 50% { translate:0 -3px; } }
+@keyframes tiny-recipient-pop { to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes rose-bloom { 0% { opacity:.15; transform:scale(.25) rotate(-12deg); } 75% { opacity:1; transform:scale(1.06) rotate(2deg); } 100% { opacity:1; transform:scale(1) rotate(0); } }
+@keyframes candy-spin { to { rotate:360deg; } }
+@keyframes tiny-gift-delivery { 0% { transform:translate3d(0,0,0) scale(1); } 60% { transform:translate3d(0,-8vh,0) scale(1.12); } 100% { transform:translate3d(0,-18vh,0) scale(.35); opacity:0; } }
+@media (max-width:700px) {
+  #khung-mat.asking-identity { animation-duration:650ms; }
+  .recipient-circle { width:clamp(76px,25vw,110px); height:clamp(76px,25vw,110px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
+}

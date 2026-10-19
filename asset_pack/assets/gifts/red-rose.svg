@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 420" role="img" aria-labelledby="title desc">
+<title id="title">Hoa hồng đỏ dành cho Tquin</title><desc id="desc">Hoa hồng đỏ nhiều lớp cánh, lá xanh và ánh sáng mềm.</desc>
+<defs>
+ <radialGradient id="petal" cx="35%" cy="28%" r="75%"><stop offset="0" stop-color="#ffb0c0"/><stop offset=".35" stop-color="#ff3e68"/><stop offset="1" stop-color="#9f082c"/></radialGradient>
+ <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd6df"/><stop offset="1" stop-color="#e91e4d"/></linearGradient>
+ <linearGradient id="stem" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8ee6a0"/><stop offset="1" stop-color="#187a4c"/></linearGradient>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<ellipse cx="160" cy="385" rx="73" ry="13" fill="#ff2a55" opacity=".14"/>
+<g class="rose-stem"><path d="M160 195 C151 255 172 308 159 377" stroke="url(#stem)" stroke-width="9" fill="none" stroke-linecap="round"/>
+<path d="M158 285 C114 248 91 264 87 290 C112 310 137 307 158 285Z" fill="#38a96b" stroke="#a1f0b3" stroke-width="2"/>
+<path d="M164 326 C199 288 229 301 231 327 C207 348 184 344 164 326Z" fill="#258d58" stroke="#a1f0b3" stroke-width="2"/>
+<path d="M122 266 L147 287 M202 313 L177 332" stroke="#c0ffd0" stroke-width="2" opacity=".7"/></g>
+<g class="rose-bloom" filter="url(#glow)">
+ <path class="petal petal-back" d="M160 196 C102 196 89 151 119 122 C144 99 181 116 188 144 C212 108 251 131 244 163 C238 193 202 207 160 196Z" fill="url(#petal)" stroke="url(#edge)" stroke-width="3"/>
+ <path class="petal petal-mid" d="M160 197 C115 188 111 151 137 132 C159 116 190 132 193 155 C216 137 236 160 218 181 C204 197 182 204 160 197Z" fill="#d91443" stroke="#ff9bb0" stroke-width="3"/>
+ <path class="petal petal-inner" d="M160 190 C134 177 139 149 157 145 C178 139 194 161 179 177 C194 169 204 185 188 194 C178 201 168 197 160 190Z" fill="#ff6687" stroke="#ffd0db" stroke-width="2"/>
+ <path d="M157 158 C166 150 177 157 172 166 C169 172 160 172 159 180" fill="none" stroke="#7f0b2a" stroke-width="5" stroke-linecap="round"/>
+</g>
+<g fill="#fff0f4"><circle cx="96" cy="143" r="3"/><circle cx="235" cy="113" r="2.5"/><circle cx="218" cy="220" r="2"/></g>
+</svg>

@@ -525,7 +525,165 @@ window.TINY_PERF = (() => {
             letter-spacing: 1px;
         }
 
+        /* =========================================================
+           PHASE 2 & 3: PERSONALIZED GIFTS & AMBIENT THEMES
+           ========================================================= */
+        .personalized-gift,
+        #clover-sample-garden svg.personalized-gift {
+            display: none !important;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Hiển thị món quà tương ứng với nhánh người nhận đã chọn */
+        body[data-recipient="tquin"] #clover-sample-garden #gift-clover-svg { display: none !important; }
+        body[data-recipient="tquin"] #clover-sample-garden #gift-red-rose-svg { display: block !important; }
+
+        body[data-recipient="nhi"] #clover-sample-garden #gift-clover-svg { display: none !important; }
+        body[data-recipient="nhi"] #clover-sample-garden #gift-blue-rose-svg { display: block !important; }
+
+        body[data-recipient="huong"] #clover-sample-garden #gift-clover-svg { display: none !important; }
+        body[data-recipient="huong"] #clover-sample-garden #gift-lollipop-svg { display: block !important; }
+
+        /* Animation nở hoa hồng đỏ (Tquin) */
+        #gift-red-rose-svg {
+            filter: drop-shadow(0 0 16px rgba(255, 42, 85, 0.88));
+        }
+        #gift-red-rose-svg .rose-stem {
+            transform-origin: 160px 380px;
+            animation: roseStemRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        #gift-red-rose-svg .petal-back {
+            transform-origin: 160px 196px;
+            animation: rosePetalBloom 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+        }
+        #gift-red-rose-svg .petal-mid {
+            transform-origin: 160px 197px;
+            animation: rosePetalBloom 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+        }
+        #gift-red-rose-svg .petal-inner {
+            transform-origin: 160px 190px;
+            animation: rosePetalBloom 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+        }
+
+        /* Animation nở hoa hồng xanh (Nhi) */
+        #gift-blue-rose-svg {
+            filter: drop-shadow(0 0 16px rgba(0, 187, 249, 0.9));
+        }
+        #gift-blue-rose-svg .rose-stem {
+            transform-origin: 160px 380px;
+            animation: roseStemRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        #gift-blue-rose-svg .petal-back {
+            transform-origin: 160px 196px;
+            animation: rosePetalBloom 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+        }
+        #gift-blue-rose-svg .petal-mid {
+            transform-origin: 160px 197px;
+            animation: rosePetalBloom 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+        }
+        #gift-blue-rose-svg .petal-inner {
+            transform-origin: 160px 190px;
+            animation: rosePetalBloom 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+        }
+
+        @keyframes roseStemRise {
+            0% { opacity: 0; transform: scaleY(0.3); }
+            100% { opacity: 1; transform: scaleY(1); }
+        }
+
+        @keyframes rosePetalBloom {
+            0% { opacity: 0.1; transform: scale(0.25) rotate(-14deg); }
+            72% { opacity: 1; transform: scale(1.08) rotate(3deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        /* Animation xoay kẹo mút pastel (Hương) */
+        #gift-lollipop-svg {
+            filter: drop-shadow(0 0 16px rgba(255, 112, 166, 0.88));
+        }
+        #gift-lollipop-svg .candy-head-swirl {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: candyHeadSpin 5.5s linear infinite;
+        }
+        @keyframes candyHeadSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Màu quà & text-shadow phát sáng theo từng nhánh trong #text-10 */
+        .clover-word.gift-red {
+            color: #ff4d6d !important;
+            text-shadow: 0 0 12px rgba(255, 42, 85, .92), 0 0 24px rgba(255, 42, 85, .62), 0 0 46px rgba(217, 4, 41, .52) !important;
+        }
+        .clover-word.gift-blue {
+            color: #00bbf9 !important;
+            text-shadow: 0 0 12px rgba(0, 187, 249, .92), 0 0 24px rgba(0, 187, 249, .62), 0 0 46px rgba(58, 134, 255, .52) !important;
+        }
+        .clover-word.gift-candy {
+            color: #ff70a6 !important;
+            text-shadow: 0 0 12px rgba(255, 112, 166, .92), 0 0 24px rgba(255, 112, 166, .62), 0 0 46px rgba(255, 214, 112, .52) !important;
+        }
+
+        /* Quầng sáng nền theo từng nhánh ở #clover-stage */
+        body[data-recipient="tquin"] #clover-stage .clover-ambient {
+            background: radial-gradient(ellipse 76vw 100vh at 81% 56%, rgba(255, 42, 85, .42), rgba(100, 10, 25, .12) 66%, transparent 92%) !important;
+        }
+        body[data-recipient="tquin"] #clover-stage .clover-sample-glow {
+            background: radial-gradient(circle, rgba(255, 62, 104, 0.45) 0%, rgba(255, 42, 85, 0.18) 45%, transparent 72%) !important;
+        }
+
+        body[data-recipient="nhi"] #clover-stage .clover-ambient {
+            background: radial-gradient(ellipse 76vw 100vh at 81% 56%, rgba(0, 187, 249, .42), rgba(16, 47, 126, .12) 66%, transparent 92%) !important;
+        }
+        body[data-recipient="nhi"] #clover-stage .clover-sample-glow {
+            background: radial-gradient(circle, rgba(93, 229, 255, 0.45) 0%, rgba(0, 187, 249, 0.18) 45%, transparent 72%) !important;
+        }
+
+        body[data-recipient="huong"] #clover-stage .clover-ambient {
+            background: radial-gradient(ellipse 76vw 100vh at 81% 56%, rgba(255, 112, 166, .42), rgba(236, 77, 155, .12) 66%, transparent 92%) !important;
+        }
+        body[data-recipient="huong"] #clover-stage .clover-sample-glow {
+            background: radial-gradient(circle, rgba(255, 159, 202, 0.45) 0%, rgba(255, 112, 166, 0.18) 45%, transparent 72%) !important;
+        }
+
+        /* Quầng sáng nền và hạt bay ở #luck-stage */
+        body[data-recipient="tquin"] #luck-stage .luck-ambient {
+            background: radial-gradient(circle at 18% 22%, rgba(255, 42, 85, .32), transparent 70%) !important;
+        }
+        body[data-recipient="nhi"] #luck-stage .luck-ambient {
+            background: radial-gradient(circle at 18% 22%, rgba(0, 187, 249, .32), transparent 70%) !important;
+        }
+        body[data-recipient="huong"] #luck-stage .luck-ambient {
+            background: radial-gradient(circle at 18% 22%, rgba(255, 112, 166, .32), transparent 70%) !important;
+        }
+
+        body[data-recipient="tquin"] #luck-stage .luck-bg-clover,
+        body[data-recipient="nhi"] #luck-stage .luck-bg-clover,
+        body[data-recipient="huong"] #luck-stage .luck-bg-clover {
+            display: none !important;
+        }
+
+        .wish-2010-highlight {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        body[data-recipient="tquin"] .wish-2010-highlight {
+            color: #ff4d6d;
+            text-shadow: 0 0 14px rgba(255, 42, 85, 0.9), 0 0 28px rgba(255, 42, 85, 0.5);
+        }
+        body[data-recipient="nhi"] .wish-2010-highlight {
+            color: #00bbf9;
+            text-shadow: 0 0 14px rgba(0, 187, 249, 0.9), 0 0 28px rgba(0, 187, 249, 0.5);
+        }
+        body[data-recipient="huong"] .wish-2010-highlight {
+            color: #ff70a6;
+            text-shadow: 0 0 14px rgba(255, 112, 166, 0.9), 0 0 28px rgba(255, 214, 112, 0.5);
+        }
+
         #lower-stars {
+
             position: absolute;
             inset: 0;
             z-index: 2;
@@ -7366,7 +7524,8 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
       <!-- Giữ nguyên đường nét cỏ, thân cong, bốn lá và cách đung đưa của file mẫu bạn gửi. -->
       <div id="clover-sample-garden" class="clover-sample-garden">
         <div class="clover-sample-glow"></div>
-        <svg viewBox="0 0 240 400" role="img" aria-label="Ngọn cỏ bốn lá màu xanh phát sáng">
+        <!-- Cỏ bốn lá nguyên bản (Fallback) -->
+        <svg id="gift-clover-svg" viewBox="0 0 240 400" role="img" aria-label="Ngọn cỏ bốn lá màu xanh phát sáng">
           <defs>
             <radialGradient id="clover-sample-leaf-gradient" cx=".5" cy=".85" r=".95">
               <stop offset="0" stop-color="#1fcf5a"/>
@@ -7390,7 +7549,84 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             </g>
           </g></g>
         </svg>
+
+        <!-- Hoa hồng đỏ dành cho Tquin (Phase 2) -->
+        <svg id="gift-red-rose-svg" class="personalized-gift gift-red-rose" viewBox="0 0 320 420" role="img" aria-label="Hoa hồng đỏ dành cho Tquin">
+          <defs>
+            <radialGradient id="red-rose-petal" cx="35%" cy="28%" r="75%"><stop offset="0" stop-color="#ffb0c0"/><stop offset=".35" stop-color="#ff3e68"/><stop offset="1" stop-color="#9f082c"/></radialGradient>
+            <linearGradient id="red-rose-edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd6df"/><stop offset="1" stop-color="#e91e4d"/></linearGradient>
+            <linearGradient id="red-rose-stem" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8ee6a0"/><stop offset="1" stop-color="#187a4c"/></linearGradient>
+            <filter id="red-rose-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <ellipse cx="160" cy="385" rx="73" ry="13" fill="#ff2a55" opacity=".14"/>
+          <g class="rose-stem">
+            <path d="M160 195 C151 255 172 308 159 377" stroke="url(#red-rose-stem)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M158 285 C114 248 91 264 87 290 C112 310 137 307 158 285Z" fill="#38a96b" stroke="#a1f0b3" stroke-width="2"/>
+            <path d="M164 326 C199 288 229 301 231 327 C207 348 184 344 164 326Z" fill="#258d58" stroke="#a1f0b3" stroke-width="2"/>
+            <path d="M122 266 L147 287 M202 313 L177 332" stroke="#c0ffd0" stroke-width="2" opacity=".7"/>
+          </g>
+          <g class="rose-bloom" filter="url(#red-rose-glow)">
+            <path class="petal petal-back" d="M160 196 C102 196 89 151 119 122 C144 99 181 116 188 144 C212 108 251 131 244 163 C238 193 202 207 160 196Z" fill="url(#red-rose-petal)" stroke="url(#red-rose-edge)" stroke-width="3"/>
+            <path class="petal petal-mid" d="M160 197 C115 188 111 151 137 132 C159 116 190 132 193 155 C216 137 236 160 218 181 C204 197 182 204 160 197Z" fill="#d91443" stroke="#ff9bb0" stroke-width="3"/>
+            <path class="petal petal-inner" d="M160 190 C134 177 139 149 157 145 C178 139 194 161 179 177 C194 169 204 185 188 194 C178 201 168 197 160 190Z" fill="#ff6687" stroke="#ffd0db" stroke-width="2"/>
+            <path d="M157 158 C166 150 177 157 172 166 C169 172 160 172 159 180" fill="none" stroke="#7f0b2a" stroke-width="5" stroke-linecap="round"/>
+          </g>
+          <g fill="#fff0f4"><circle cx="96" cy="143" r="3"/><circle cx="235" cy="113" r="2.5"/><circle cx="218" cy="220" r="2"/></g>
+        </svg>
+
+        <!-- Hoa hồng xanh dành cho Nhi (Phase 2) -->
+        <svg id="gift-blue-rose-svg" class="personalized-gift gift-blue-rose" viewBox="0 0 320 420" role="img" aria-label="Hoa hồng xanh dành cho Nhi">
+          <defs>
+            <radialGradient id="blue-rose-petal" cx="30%" cy="25%" r="80%"><stop offset="0" stop-color="#e4fdff"/><stop offset=".3" stop-color="#5de5ff"/><stop offset=".7" stop-color="#1874d1"/><stop offset="1" stop-color="#102f7e"/></radialGradient>
+            <linearGradient id="blue-rose-edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e5fdff"/><stop offset="1" stop-color="#50c8ff"/></linearGradient>
+            <linearGradient id="blue-rose-stem" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a4f7e6"/><stop offset="1" stop-color="#167c7d"/></linearGradient>
+            <filter id="blue-rose-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <ellipse cx="160" cy="385" rx="73" ry="13" fill="#00bbf9" opacity=".16"/>
+          <g class="rose-stem">
+            <path d="M160 195 C151 255 172 308 159 377" stroke="url(#blue-rose-stem)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M158 285 C114 248 91 264 87 290 C112 310 137 307 158 285Z" fill="#1e9b94" stroke="#a6fff0" stroke-width="2"/>
+            <path d="M164 326 C199 288 229 301 231 327 C207 348 184 344 164 326Z" fill="#177b88" stroke="#a6fff0" stroke-width="2"/>
+            <path d="M122 266 L147 287 M202 313 L177 332" stroke="#e4ffff" stroke-width="2" opacity=".7"/>
+          </g>
+          <g class="rose-bloom" filter="url(#blue-rose-glow)">
+            <path class="petal petal-back" d="M160 196 C102 196 89 151 119 122 C144 99 181 116 188 144 C212 108 251 131 244 163 C238 193 202 207 160 196Z" fill="url(#blue-rose-petal)" stroke="url(#blue-rose-edge)" stroke-width="3"/>
+            <path class="petal petal-mid" d="M160 197 C115 188 111 151 137 132 C159 116 190 132 193 155 C216 137 236 160 218 181 C204 197 182 204 160 197Z" fill="#1674d4" stroke="#a9f4ff" stroke-width="3"/>
+            <path class="petal petal-inner" d="M160 190 C134 177 139 149 157 145 C178 139 194 161 179 177 C194 169 204 185 188 194 C178 201 168 197 160 190Z" fill="#72e9ff" stroke="#e2fcff" stroke-width="2"/>
+            <path d="M157 158 C166 150 177 157 172 166 C169 172 160 172 159 180" fill="none" stroke="#11498f" stroke-width="5" stroke-linecap="round"/>
+          </g>
+          <g fill="#f0ffff"><circle cx="96" cy="143" r="3"/><circle cx="235" cy="113" r="2.5"/><circle cx="218" cy="220" r="2"/></g>
+        </svg>
+
+        <!-- Kẹo mút pastel dành cho Hương (Phase 2) -->
+        <svg id="gift-lollipop-svg" class="personalized-gift gift-lollipop" viewBox="0 0 320 420" role="img" aria-label="Kẹo mút pastel dành cho Hương">
+          <defs>
+            <radialGradient id="lollipop-candy" cx="30%" cy="20%" r="85%"><stop stop-color="#fff8fc"/><stop offset=".42" stop-color="#ff9fca"/><stop offset="1" stop-color="#ec4d9b"/></radialGradient>
+            <linearGradient id="lollipop-stick" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fff0d4"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#f0bd92"/></linearGradient>
+            <filter id="lollipop-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <clipPath id="lollipop-circle"><circle cx="160" cy="154" r="76"/></clipPath>
+          </defs>
+          <ellipse cx="160" cy="385" rx="65" ry="12" fill="#ff70a6" opacity=".16"/>
+          <g class="candy-stick">
+            <path d="M160 215 L160 365" stroke="#f0a7c8" stroke-width="18" stroke-linecap="round"/>
+            <path d="M160 215 L160 365" stroke="url(#lollipop-stick)" stroke-width="12" stroke-linecap="round"/>
+          </g>
+          <g class="candy-head" filter="url(#lollipop-glow)">
+            <circle cx="160" cy="154" r="80" fill="url(#lollipop-candy)" stroke="#fff0fa" stroke-width="4"/>
+            <g class="candy-head-swirl" clip-path="url(#lollipop-circle)">
+              <path d="M160 154 C160 139 182 139 182 154 C182 176 146 180 139 155 C127 116 180 99 207 126 C243 164 208 216 163 215 C112 214 86 168 108 127 C133 79 202 80 232 122" fill="none" stroke="#fff1a8" stroke-width="15" stroke-linecap="round"/>
+              <path d="M160 154 C160 139 182 139 182 154 C182 176 146 180 139 155 C127 116 180 99 207 126 C243 164 208 216 163 215 C112 214 86 168 108 127 C133 79 202 80 232 122" fill="none" stroke="#ff6caa" stroke-width="8" stroke-linecap="round"/>
+            </g>
+            <ellipse cx="133" cy="119" rx="23" ry="11" fill="#fff" opacity=".45" transform="rotate(-35 133 119)"/>
+          </g>
+          <g class="candy-bow">
+            <path d="M154 254 C120 223 111 257 143 270 L160 260 L177 270 C209 257 200 223 166 254 L160 261Z" fill="#ff70a6" stroke="#ffe5f1" stroke-width="3"/>
+            <circle cx="160" cy="261" r="7" fill="#ffd670" stroke="#fff5d7" stroke-width="2"/>
+          </g>
+          <g fill="#fff"><circle cx="79" cy="105" r="3"/><circle cx="243" cy="93" r="2.5"/><path d="M231 211 l4 8 8 4 -8 4 -4 8 -4 -8 -8 -4 8 -4z"/></g>
+        </svg>
       </div>
+
     </div>
 
     <div id="luck-stage" class="wish-stage" aria-hidden="true">
@@ -8097,13 +8333,43 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
             canClick = true;
         }
 
+        // Hàm chuẩn hóa chủ đề người nhận (Phase 2 & 3 Spec)
+        function applyRecipientTheme(recipientKey) {
+            const validKeys = ['tquin', 'nhi', 'huong'];
+            const key = validKeys.includes(recipientKey) ? recipientKey : 'tquin';
+            window.TINY_RECIPIENT = key;
+            document.body.dataset.recipient = key;
+
+            const text10El = document.getElementById('text-10');
+            if (text10El) {
+                if (key === 'tquin') {
+                    text10El.innerHTML = 'Tớ tặng cậu <span class="clover-word gift-red">đóa hoa hồng</span> này';
+                } else if (key === 'nhi') {
+                    text10El.innerHTML = 'Tớ tặng cậu <span class="clover-word gift-blue">đóa hoa hồng</span> này';
+                } else if (key === 'huong') {
+                    text10El.innerHTML = 'Tớ tặng cậu <span class="clover-word gift-candy">cây kẹo ngọt ngào</span> này';
+                } else {
+                    text10El.innerHTML = 'anh tặng em ngọn <span class="clover-word">cỏ 4 lá</span> này';
+                }
+            }
+
+            const text12El = document.getElementById('text-12');
+            if (text12El) {
+                text12El.innerHTML = 'Chúc cậu có một ngày <span class="wish-2010-highlight">20/10 thật tuyệt vời và vui vẻ</span>';
+            }
+
+            if (typeof capNhatSpritesChoNguoiNhan === 'function') {
+                capNhatSpritesChoNguoiNhan();
+            }
+        }
+        window.applyRecipientTheme = applyRecipientTheme;
+
         // Xử lý khi người dùng chọn 1 trong 3 vòng tròn (.recipient-circle)
         function onRecipientSelected(recipientKey) {
             if (!isWaitingForRecipientSelection) return;
             const validKeys = ['tquin', 'nhi', 'huong'];
             const key = validKeys.includes(recipientKey) ? recipientKey : 'tquin';
-            window.TINY_RECIPIENT = key;
-            document.body.dataset.recipient = key;
+            applyRecipientTheme(key);
 
             // Hiệu ứng tương tác: phóng to vòng tròn được chọn, mờ 2 vòng tròn còn lại
             if (recipientSelector) {
@@ -8261,6 +8527,11 @@ html.tiny-pc-beauty-v12 #uiverse-starfield #stars3 {
                     startShareFlightScene();
                 }
         }
+        window.chuyenCanh = chuyenCanh;
+        window.advanceScene = function() {
+            canClick = true;
+            chuyenCanh();
+        };
 
         function batDauCanhMuon() {
             if (canhMuonDaChay) return;
@@ -9281,8 +9552,151 @@ function taoSprite(sang, hue) {
     x.fillStyle = '#eaffd8'; x.beginPath(); x.arc(0, 0, 3.4, 0, 6.2832); x.fill();
     return c;
 }
-const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)];
+
+// Hàm sinh sprite cánh hoa hồng uốn lượn (Tquin & Nhi) - Phase 3
+function taoSpriteRosePetal(mainColor, lightColor, darkColor, glowColor, sang) {
+    const c = document.createElement('canvas');
+    c.width = 170; c.height = 170;
+    const x = c.getContext('2d');
+    x.translate(85, 85);
+    const h = x.createRadialGradient(0, 0, 8, 0, 0, 75);
+    h.addColorStop(0, glowColor.replace('ALPHA', (.52 * sang).toFixed(2)));
+    h.addColorStop(.5, glowColor.replace('ALPHA', (.20 * sang).toFixed(2)));
+    h.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = h; x.fillRect(-85, -85, 170, 170);
+
+    const drawPetal = () => {
+        x.save();
+        x.scale(1.2, 1.2);
+        const g = x.createRadialGradient(0, -6, 4, 0, 6, 48);
+        g.addColorStop(0, lightColor);
+        g.addColorStop(0.45, mainColor);
+        g.addColorStop(1, darkColor);
+        x.fillStyle = g;
+        x.strokeStyle = lightColor;
+        x.lineWidth = 1.4;
+        x.beginPath();
+        x.moveTo(0, -38);
+        x.bezierCurveTo(38, -24, 34, 26, 0, 38);
+        x.bezierCurveTo(-34, 26, -38, -24, 0, -38);
+        x.fill();
+        x.stroke();
+        x.strokeStyle = 'rgba(255,255,255,0.45)';
+        x.lineWidth = 1.0;
+        x.beginPath();
+        x.moveTo(0, -28);
+        x.quadraticCurveTo(4, 0, 0, 24);
+        x.stroke();
+        x.restore();
+    };
+    x.shadowColor = mainColor;
+    x.shadowBlur = 18;
+    drawPetal();
+    x.shadowBlur = 0;
+    return c;
+}
+
+// Hàm sinh sprite kẹo xoắn pastel (Hương) - Phase 3
+function taoSpriteCandy(sang) {
+    const c = document.createElement('canvas');
+    c.width = 170; c.height = 170;
+    const x = c.getContext('2d');
+    x.translate(85, 85);
+    const h = x.createRadialGradient(0, 0, 6, 0, 0, 75);
+    h.addColorStop(0, 'rgba(255,160,200,' + (.52 * sang).toFixed(2) + ')');
+    h.addColorStop(.5, 'rgba(255,214,112,' + (.18 * sang).toFixed(2) + ')');
+    h.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = h; x.fillRect(-85, -85, 170, 170);
+
+    x.save();
+    x.scale(1.15, 1.15);
+    const r = 26;
+    const grad = x.createRadialGradient(-6, -6, 4, 0, 0, r);
+    grad.addColorStop(0, '#fff8fc');
+    grad.addColorStop(0.5, '#ff9fca');
+    grad.addColorStop(1, '#ec4d9b');
+    x.fillStyle = grad;
+    x.beginPath();
+    x.arc(0, 0, r, 0, Math.PI * 2);
+    x.fill();
+    x.strokeStyle = '#fff0fa';
+    x.lineWidth = 2.5;
+    x.stroke();
+
+    x.strokeStyle = '#ffd670';
+    x.lineWidth = 4;
+    x.beginPath();
+    x.arc(0, 0, r * 0.65, -0.6, 2.3);
+    x.stroke();
+
+    x.fillStyle = 'rgba(255,255,255,0.65)';
+    x.beginPath();
+    x.ellipse(-8, -10, 8, 4, -0.6, 0, Math.PI * 2);
+    x.fill();
+    x.restore();
+    return c;
+}
+
+// Hàm sinh sprite trái tim pastel (Hương) - Phase 3
+function taoSpriteHeart(sang) {
+    const c = document.createElement('canvas');
+    c.width = 170; c.height = 170;
+    const x = c.getContext('2d');
+    x.translate(85, 85);
+    const h = x.createRadialGradient(0, 0, 6, 0, 0, 75);
+    h.addColorStop(0, 'rgba(255,112,166,' + (.52 * sang).toFixed(2) + ')');
+    h.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = h; x.fillRect(-85, -85, 170, 170);
+
+    x.save();
+    x.scale(1.2, 1.2);
+    const g = x.createLinearGradient(0, -25, 0, 25);
+    g.addColorStop(0, '#ffb3c6');
+    g.addColorStop(0.5, '#ff70a6');
+    g.addColorStop(1, '#ff4d6d');
+    x.fillStyle = g;
+    x.shadowColor = '#ff4d6d';
+    x.shadowBlur = 12;
+    x.beginPath();
+    x.moveTo(0, 18);
+    x.bezierCurveTo(-26, 0, -22, -26, 0, -12);
+    x.bezierCurveTo(22, -26, 26, 0, 0, 18);
+    x.fill();
+    x.strokeStyle = '#fff';
+    x.lineWidth = 1.2;
+    x.stroke();
+    x.restore();
+    return c;
+}
+
+let SPRITES = [];
+function capNhatSpritesChoNguoiNhan() {
+    const rec = window.TINY_RECIPIENT || 'tquin';
+    if (rec === 'tquin') {
+        SPRITES = [
+            taoSpriteRosePetal('#ff2a55', '#ffb0c0', '#9f082c', 'rgba(255,42,85,ALPHA)', 1.05),
+            taoSpriteRosePetal('#e91e4d', '#ffd6df', '#7f0b2a', 'rgba(255,62,104,ALPHA)', 0.95),
+            taoSpriteRosePetal('#ff4d6d', '#fff0f4', '#c9184a', 'rgba(255,77,109,ALPHA)', 1.1)
+        ];
+    } else if (rec === 'nhi') {
+        SPRITES = [
+            taoSpriteRosePetal('#00bbf9', '#e4fdff', '#102f7e', 'rgba(0,187,249,ALPHA)', 1.05),
+            taoSpriteRosePetal('#3a86ff', '#caf0f8', '#1874d1', 'rgba(58,134,255,ALPHA)', 0.95),
+            taoSpriteRosePetal('#5de5ff', '#ffffff', '#023e8a', 'rgba(93,229,255,ALPHA)', 1.1)
+        ];
+    } else if (rec === 'huong') {
+        SPRITES = [
+            taoSpriteCandy(1.05),
+            taoSpriteCandy(0.95),
+            taoSpriteHeart(1.08),
+            taoSpriteHeart(0.95)
+        ];
+    } else {
+        SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)];
+    }
+}
             let backCanvas, frontCanvas, backCtx, frontCtx;
+
             let W=0,H=0,S=1,dpr=1, particles=[], raf=0, last=0, started=0, acc=0, ready=false;
             let edgeLaneSeq=0; // luôn có đợt lá đi ngang vùng sát mép trái phía trên/dưới
             const isMobile = () => W <= 700;
@@ -9350,10 +9764,12 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
             function prepare() {
                 if (prepared || !TINY_PERF.mobile) return;
                 prepared = true;
+                capNhatSpritesChoNguoiNhan();
                 init();
             }
             function start() {
                 cancelAnimationFrame(raf);
+                capNhatSpritesChoNguoiNhan();
                 init();
                 if(!backCanvas||!frontCanvas)return;
                 particles=[];acc=0;last=0;started=0;edgeLaneSeq=0;
@@ -9540,7 +9956,12 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                 });
                 afterPaintIfCurrent('luck',()=>luckCanvasLeaves.start(),90);
             }
-            setTimeout(() => { if(activeWish==='luck') text12.classList.add('hien-thi'); }, 140);
+            setTimeout(() => {
+                if (activeWish === 'luck') {
+                    text12.innerHTML = 'Chúc cậu có một ngày <span class="wish-2010-highlight">20/10 thật tuyệt vời và vui vẻ</span>';
+                    text12.classList.add('hien-thi');
+                }
+            }, 140);
 
             // Mở 2 mắt trước, sau đó chớp tự nhiên, giữ nguyên //// má hồng.
             Promise.all([moMatMayManTai(0, 210), moMatMayManTai(1, 210)]).then(() => {
@@ -9741,7 +10162,12 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
             cancelAnimationFrame(cloverGiveRaf);
             const garden = document.getElementById('clover-sample-garden');
             const glow = garden ? garden.querySelector('.clover-sample-glow') : null;
-            const plant = garden ? garden.querySelector('.clover-sample-plant') : null;
+            const rec = window.TINY_RECIPIENT || 'tquin';
+            let plant = null;
+            if (rec === 'tquin') plant = garden ? garden.querySelector('#gift-red-rose-svg') : null;
+            else if (rec === 'nhi') plant = garden ? garden.querySelector('#gift-blue-rose-svg') : null;
+            else if (rec === 'huong') plant = garden ? garden.querySelector('#gift-lollipop-svg') : null;
+            if (!plant) plant = garden ? garden.querySelector('.clover-sample-plant') : null;
             const ambient = cloverStage ? cloverStage.querySelector('.clover-ambient') : null;
             const particles = document.getElementById('clover-particle-field');
             if (!garden || !glow || !plant || !ambient) {
@@ -9763,7 +10189,7 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
             const fadeDur = 760;
             const totalDur = glowDur + fadeDur;
 
-            // Giữ vị trí/độ lớn của cỏ như file cũ; chỉ thay logic phát sáng và mờ đi cho mượt.
+            // Giữ vị trí/độ lớn của quà như file cũ; chỉ thay logic phát sáng và mờ đi cho mượt.
             cloverStage.classList.remove('give-away');
             garden.style.transition = 'none';
             garden.style.opacity = '1';
@@ -9795,7 +10221,7 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                     wishBackdrop.style.opacity = '0';
                     return;
                 }
-                // Giữ chất sáng của file cũ nhưng tăng độ lóa lên rõ hơn, vẫn mượt liên tục.
+                // Giữ chất sáng của file cũ nhưng tăng độ lóa lên rõ hơn, theo bảng màu quà tặng
                 const r1 = lerp(16, 34, v);
                 const r2 = lerp(38, 92, v);
                 const r3 = lerp(92, 198, v);
@@ -9803,7 +10229,15 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                 const a2 = lerp(.94, 1.00, v);
                 const a3 = lerp(.76, .98, v);
                 const bright = lerp(1.02, 1.32, v);
-                plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(110,255,172,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(52,245,128,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(30,200,90,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                if (rec === 'tquin') {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(255,140,165,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(255,42,85,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(200,10,45,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                } else if (rec === 'nhi') {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(160,240,255,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(0,187,249,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(24,116,209,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                } else if (rec === 'huong') {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(255,200,230,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(255,112,166,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(236,77,155,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                } else {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(110,255,172,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(52,245,128,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(30,200,90,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                }
                 glow.style.opacity = String(lerp(.90, 1, v));
                 glow.style.filter = `blur(${lerp(5, 22, v).toFixed(2)}px)`;
                 ambient.style.opacity = String(lerp(.88, 1, v));
@@ -9828,7 +10262,7 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                     wishBackdrop.style.opacity = String(Math.max(0, .92*bloom));
                     return;
                 }
-                // Cỏ đạt sáng cực đại xong bắt đầu nhạt dần; từ tâm cỏ màu xanh nhẹ lan ra khắp không gian.
+                // Quà đạt sáng cực đại xong bắt đầu nhạt dần; từ tâm quà lan tỏa màu sắc ấm áp ra khắp không gian.
                 const r1 = lerp(34, 4, p);
                 const r2 = lerp(92, 10, p);
                 const r3 = lerp(198, 18, p);
@@ -9836,7 +10270,15 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                 const a2 = lerp(1.00, .05, p);
                 const a3 = lerp(.98, 0.00, p);
                 const bright = lerp(1.32, .92, p);
-                plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(110,255,172,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(52,245,128,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(30,200,90,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                if (rec === 'tquin') {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(255,140,165,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(255,42,85,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(200,10,45,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                } else if (rec === 'nhi') {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(160,240,255,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(0,187,249,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(24,116,209,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                } else if (rec === 'huong') {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(255,200,230,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(255,112,166,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(236,77,155,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                } else {
+                    plant.style.filter = `drop-shadow(0 0 ${r1.toFixed(2)}px rgba(110,255,172,${a1.toFixed(3)})) drop-shadow(0 0 ${r2.toFixed(2)}px rgba(52,245,128,${a2.toFixed(3)})) drop-shadow(0 0 ${r3.toFixed(2)}px rgba(30,200,90,${a3.toFixed(3)})) brightness(${bright.toFixed(3)})`;
+                }
                 plant.style.opacity = String(remain);
                 glow.style.opacity = String(remain);
                 glow.style.filter = `blur(${lerp(22, 32, p).toFixed(2)}px)`;
@@ -9844,7 +10286,7 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                 garden.style.opacity = String(remain);
                 if (particles) particles.style.opacity = '1';
 
-                // Không gian chuyển xanh mạnh hơn và lan ra từ đúng phía cỏ 4 lá.
+                // Không gian chuyển sắc mạnh hơn và lan ra từ đúng phía món quà.
                 const spread = smooth(p);
                 const bloom = Math.sin(Math.PI * Math.min(1, p * 0.96));
                 const sizeX = lerp(12, 186, spread);
@@ -9853,7 +10295,15 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                 const midA = lerp(.08, .24, bloom);
                 const outerA = lerp(.03, .14, bloom);
                 const globalA = lerp(0, .28, Math.max(0, p - 0.10) / 0.90);
-                wishBackdrop.style.background = `radial-gradient(ellipse ${sizeX.toFixed(2)}vw ${sizeY.toFixed(2)}vh at 79% 49%, rgba(186,255,205,${coreA.toFixed(3)}) 0%, rgba(118,255,168,${midA.toFixed(3)}) 26%, rgba(63,199,112,${outerA.toFixed(3)}) 56%, rgba(20,58,33,0) 84%), linear-gradient(rgba(70,190,116,${globalA.toFixed(3)}), rgba(70,190,116,${globalA.toFixed(3)}))`;
+                if (rec === 'tquin') {
+                    wishBackdrop.style.background = `radial-gradient(ellipse ${sizeX.toFixed(2)}vw ${sizeY.toFixed(2)}vh at 79% 49%, rgba(255,190,205,${coreA.toFixed(3)}) 0%, rgba(255,62,104,${midA.toFixed(3)}) 26%, rgba(160,10,40,${outerA.toFixed(3)}) 56%, rgba(60,5,15,0) 84%), linear-gradient(rgba(200,30,60,${globalA.toFixed(3)}), rgba(200,30,60,${globalA.toFixed(3)}))`;
+                } else if (rec === 'nhi') {
+                    wishBackdrop.style.background = `radial-gradient(ellipse ${sizeX.toFixed(2)}vw ${sizeY.toFixed(2)}vh at 79% 49%, rgba(210,250,255,${coreA.toFixed(3)}) 0%, rgba(0,187,249,${midA.toFixed(3)}) 26%, rgba(16,47,126,${outerA.toFixed(3)}) 56%, rgba(5,15,50,0) 84%), linear-gradient(rgba(20,80,180,${globalA.toFixed(3)}), rgba(20,80,180,${globalA.toFixed(3)}))`;
+                } else if (rec === 'huong') {
+                    wishBackdrop.style.background = `radial-gradient(ellipse ${sizeX.toFixed(2)}vw ${sizeY.toFixed(2)}vh at 79% 49%, rgba(255,230,245,${coreA.toFixed(3)}) 0%, rgba(255,112,166,${midA.toFixed(3)}) 26%, rgba(236,77,155,${outerA.toFixed(3)}) 56%, rgba(60,10,40,0) 84%), linear-gradient(rgba(220,70,140,${globalA.toFixed(3)}), rgba(220,70,140,${globalA.toFixed(3)}))`;
+                } else {
+                    wishBackdrop.style.background = `radial-gradient(ellipse ${sizeX.toFixed(2)}vw ${sizeY.toFixed(2)}vh at 79% 49%, rgba(186,255,205,${coreA.toFixed(3)}) 0%, rgba(118,255,168,${midA.toFixed(3)}) 26%, rgba(63,199,112,${outerA.toFixed(3)}) 56%, rgba(20,58,33,0) 84%), linear-gradient(rgba(70,190,116,${globalA.toFixed(3)}), rgba(70,190,116,${globalA.toFixed(3)}))`;
+                }
                 wishBackdrop.style.opacity = String(Math.max(0.14, bloom) * 0.99);
 
                 taoDomDomCoBonLa();
@@ -9947,8 +10397,12 @@ const SPRITES = [taoSprite(1.02, 140), taoSprite(.96, 136), taoSprite(1.08, 145)
                     batDauHatSangCoBonLa();
                     taoDomDomCoBonLa();
                 }
-                const text10Word = document.querySelector('#text-10 .clover-word');
-                if (text10Word) text10Word.style.textShadow = '0 0 12px rgba(108,255,152,.92), 0 0 24px rgba(108,255,152,.62), 0 0 46px rgba(70,234,122,.52)';
+                applyRecipientTheme(window.TINY_RECIPIENT);
+                const rec = window.TINY_RECIPIENT || 'tquin';
+                if (!['tquin', 'nhi', 'huong'].includes(rec)) {
+                    const text10Word = document.querySelector('#text-10 .clover-word');
+                    if (text10Word) text10Word.style.textShadow = '0 0 12px rgba(108,255,152,.92), 0 0 24px rgba(108,255,152,.62), 0 0 46px rgba(70,234,122,.52)';
+                }
             }, 340);
             setTimeout(() => text10.classList.add('hien-thi'), 560);
             if (TINY_PERF.mobile) {
